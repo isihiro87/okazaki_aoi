@@ -4,17 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>会員情報の登録｜岡崎市葵倫理法人会</title>
+<meta name="theme-color" content="#1b2a4a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <main class="card">
   <header class="head">
-    <p class="kai">岡崎市葵倫理法人会</p>
-    <h1>会員情報の登録</h1>
-    <p id="greet" class="greet">お名前・役職・委員会をご登録ください。</p>
+    <div class="head-in">
+      <p class="kai">OKAZAKI AOI RINRI</p>
+      <h1>会員情報の登録</h1>
+      <p id="greet" class="greet">お名前・役職・委員会をご登録ください。</p>
+    </div>
   </header>
 
-  <form id="regForm" novalidate>
+  <form id="regForm" class="form" novalidate>
     <input type="hidden" id="lineUserId">
     <input type="hidden" id="lineDisplayName">
 
@@ -24,7 +30,7 @@
     </label>
 
     <label class="field">
-      <span class="label">会社名</span>
+      <span class="label">会社名 <em class="opt">任意</em></span>
       <input type="text" id="company" autocomplete="organization" placeholder="例）有限会社小久井農場">
     </label>
 
@@ -46,18 +52,19 @@
       <input type="text" placeholder="委員会名をご入力ください">
     </div>
 
-    <fieldset class="field">
+    <fieldset class="field roles">
       <legend class="label">委員会での役割（該当する場合）</legend>
-      <label class="check"><input type="checkbox" name="committeeRole" value="リーダー"> リーダー</label>
-      <label class="check"><input type="checkbox" name="committeeRole" value="サブリーダー"> サブリーダー</label>
+      <label class="check"><input type="checkbox" name="committeeRole" value="リーダー"><span>リーダー</span></label>
+      <label class="check"><input type="checkbox" name="committeeRole" value="サブリーダー"><span>サブリーダー</span></label>
     </fieldset>
 
     <button type="submit" id="submitBtn" class="btn">登録する</button>
     <p id="note" class="note"></p>
+    <p class="privacy">ご入力内容は、出欠連絡・委員会や行事のご案内に使用します。</p>
   </form>
 
   <div id="done" class="done" hidden>
-    <p class="done-mark">✓</p>
+    <div class="done-mark">✓</div>
     <h2>ご登録ありがとうございました</h2>
     <p>内容に変更があれば、メニュー「会員登録」からいつでも更新できます。</p>
   </div>
