@@ -43,7 +43,8 @@ line/
 4. **リッチメニュー**（`richmenu/README.md`）
    - 画像を用意し、`richmenu.json` の URL を実値（LIFF URL・サイトURL）に差し替えて登録、デフォルト設定。
 
-> 差し替えが必要なプレースホルダ：`LIFF_ID` / `GAS_ENDPOINT`（Webアプリ URL）/ サイトURL（`https://example.com/`）/ スプレッドシートID。
+> 残りの差し替えプレースホルダ：`LIFF_ID` / `GAS_ENDPOINT`（Webアプリ URL）/ スプレッドシートID。
+> サイトURL（`https://okazaki-aoi.vercel.app/`）は反映済み。
 
 ## 対象範囲と次の段階
 

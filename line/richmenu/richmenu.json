@@ -17,7 +17,7 @@
       "action": {
         "type": "uri",
         "label": "講話スケジュール",
-        "uri": "https://example.com/#schedule"
+        "uri": "https://okazaki-aoi.vercel.app/#schedule"
       }
     },
     {
@@ -25,7 +25,7 @@
       "action": {
         "type": "uri",
         "label": "会場アクセス",
-        "uri": "https://example.com/#access"
+        "uri": "https://okazaki-aoi.vercel.app/#access"
       }
     },
     {

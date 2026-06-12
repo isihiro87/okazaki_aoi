@@ -12,7 +12,7 @@
 ## 事前に差し替えるもの（`richmenu.json`）
 
 - `会員登録` の `uri` → 実際の **LIFF URL**（`https://liff.line.me/＜LIFF ID＞`）
-- `講話スケジュール` / `会場アクセス` の `uri` → 公開サイトのURL（`https://example.com/` を実ドメインに）
+- `講話スケジュール` / `会場アクセス` の `uri` → `https://okazaki-aoi.vercel.app/`（設定済み）
 
 ## 画像
 
