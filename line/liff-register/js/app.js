@@ -4,7 +4,7 @@
    LINE内で開き、氏名・役職・委員会を登録して GAS(スプレッドシート)へ保存する。
    ↓ 2か所を実値に差し替えてください。
    ============================================================ */
-const LIFF_ID = "0000000000-xxxxxxxx";                                  // ← LINE Developers の LIFF ID
+const LIFF_ID = "2010379578-SHlRwAxA";                                  // ← LINE Developers の LIFF ID
 const GAS_ENDPOINT = "https://script.google.com/macros/s/XXXXXXXX/exec"; // ← GAS WebアプリのURL
 
 /* 役職(倫理法人会内)。並び順そのまま表示。最後の「その他」選択で自由入力欄を表示 */
