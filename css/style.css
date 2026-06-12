@@ -323,11 +323,11 @@ nav a:hover{color:var(--akebono)}
 .line-box h3{font-family:var(--serif);font-size:19px;font-weight:600;margin-bottom:10px}
 .line-box p{font-size:13px;color:var(--hai);margin-bottom:20px;text-align:left}
 .qr{
-  width:160px;height:160px;margin:0 auto 18px;
-  border:2px dashed rgba(27,42,74,.25);border-radius:12px;
+  width:180px;height:180px;margin:0 auto 18px;
+  border:1px solid rgba(27,42,74,.12);border-radius:12px;
   display:flex;align-items:center;justify-content:center;
   font-size:12px;color:var(--hai);letter-spacing:.1em;
-  background:var(--kinari);
+  background:#fff;padding:10px;
   overflow:hidden;
 }
 .qr img{width:100%;height:100%;object-fit:contain}
