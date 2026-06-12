@@ -1,0 +1,11 @@
+# OS / エディタ
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.vscode/
+
+# 機密情報は絶対にコミットしない（チャネルアクセストークン・シークレット等）
+*.secret
+.env
+secrets.*

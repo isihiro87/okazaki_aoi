@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- リッチメニュー画像テンプレート(2500×1686)。PNGに書き出して使用。
+     ブラウザで開く or Inkscape等でPNGエクスポート(2500×1686, 1MB以下)。
+     アイコンは仮の図形です。差し替え可。 -->
+<svg xmlns="http://www.w3.org/2000/svg" width="2500" height="1686" viewBox="0 0 2500 1686">
+  <defs>
+    <style>
+      .t{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;fill:#ffffff;text-anchor:middle}
+      .title{font-size:120px;font-weight:700;letter-spacing:8px}
+      .sub{font-size:54px;fill:#ffd9c9;letter-spacing:6px}
+      .ic{fill:none;stroke:#ffffff;stroke-width:14;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <!-- 背景(4分割) -->
+  <rect x="0"    y="0"   width="1250" height="843" fill="#1b2a4a"/>
+  <rect x="1250" y="0"   width="1250" height="843" fill="#24365a"/>
+  <rect x="0"    y="843" width="1250" height="843" fill="#24365a"/>
+  <rect x="1250" y="843" width="1250" height="843" fill="#1b2a4a"/>
+  <!-- 区切り線 -->
+  <line x1="1250" y1="40" x2="1250" y2="1646" stroke="#ffffff" stroke-opacity="0.18" stroke-width="4"/>
+  <line x1="40" y1="843" x2="2460" y2="843" stroke="#ffffff" stroke-opacity="0.18" stroke-width="4"/>
+
+  <!-- ① 会員登録(左上) -->
+  <g transform="translate(625,300)">
+    <circle cx="0" cy="-10" r="58" class="ic"/>
+    <path d="M-95 120 a95 95 0 0 1 190 0" class="ic"/>
+  </g>
+  <text class="t title" x="625" y="560">会員登録</text>
+  <text class="t sub"   x="625" y="650">お名前・役職・委員会</text>
+
+  <!-- ② 講話スケジュール(右上) -->
+  <g transform="translate(1875,300)" class="ic">
+    <rect x="-80" y="-70" width="160" height="150" rx="14"/>
+    <line x1="-80" y1="-20" x2="80" y2="-20"/>
+    <line x1="-40" y1="-110" x2="-40" y2="-50"/>
+    <line x1="40" y1="-110" x2="40" y2="-50"/>
+  </g>
+  <text class="t title" x="1875" y="560">講話スケジュール</text>
+  <text class="t sub"   x="1875" y="650">今月の講師・予定</text>
+
+  <!-- ③ 会場アクセス(左下) -->
+  <g transform="translate(625,1140)" class="ic">
+    <path d="M0 -90 a70 70 0 0 1 70 70 c0 50 -70 130 -70 130 c0 0 -70 -80 -70 -130 a70 70 0 0 1 70 -70 z"/>
+    <circle cx="0" cy="-20" r="26"/>
+  </g>
+  <text class="t title" x="625" y="1400">会場アクセス</text>
+  <text class="t sub"   x="625" y="1490">イズモホール岡崎貴賓館</text>
+
+  <!-- ④ お問い合わせ(右下) -->
+  <g transform="translate(1875,1140)" class="ic">
+    <path d="M-95 -70 h190 a18 18 0 0 1 18 18 v110 a18 18 0 0 1 -18 18 h-120 l-50 50 v-50 h-20 a18 18 0 0 1 -18 -18 v-110 a18 18 0 0 1 18 -18 z"/>
+  </g>
+  <text class="t title" x="1875" y="1400">お問い合わせ</text>
+  <text class="t sub"   x="1875" y="1490">見学・ご質問はこちら</text>
+</svg>

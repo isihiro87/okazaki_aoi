@@ -1,0 +1,40 @@
+{
+  "size": { "width": 2500, "height": 1686 },
+  "selected": true,
+  "name": "会員メニュー v1",
+  "chatBarText": "メニュー",
+  "areas": [
+    {
+      "bounds": { "x": 0, "y": 0, "width": 1250, "height": 843 },
+      "action": {
+        "type": "uri",
+        "label": "会員登録",
+        "uri": "https://liff.line.me/0000000000-xxxxxxxx"
+      }
+    },
+    {
+      "bounds": { "x": 1250, "y": 0, "width": 1250, "height": 843 },
+      "action": {
+        "type": "uri",
+        "label": "講話スケジュール",
+        "uri": "https://example.com/#schedule"
+      }
+    },
+    {
+      "bounds": { "x": 0, "y": 843, "width": 1250, "height": 843 },
+      "action": {
+        "type": "uri",
+        "label": "会場アクセス",
+        "uri": "https://example.com/#access"
+      }
+    },
+    {
+      "bounds": { "x": 1250, "y": 843, "width": 1250, "height": 843 },
+      "action": {
+        "type": "message",
+        "label": "お問い合わせ",
+        "text": "お問い合わせ"
+      }
+    }
+  ]
+}
