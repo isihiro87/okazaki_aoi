@@ -42,6 +42,9 @@ const el = {
   msg: document.getElementById("msg"),
   list: document.getElementById("list"),
   toast: document.getElementById("toast"),
+  addBtn: document.getElementById("addBtn"),
+  addForm: document.getElementById("addForm"),
+  addCancel: document.getElementById("addCancel"),
 };
 
 let idToken = "";
@@ -347,6 +350,51 @@ el.list.addEventListener("click", async function (e) {
   }
 });
 
+/* ---- ゲストを追加する ---- */
+el.addBtn.addEventListener("click", function () {
+  el.addForm.hidden = false;
+  el.addBtn.hidden = true;
+  const d = el.addForm.querySelector('[data-n="firstVisit"]');
+  if (!d.value) d.value = new Date().toISOString().slice(0, 10);
+  el.addForm.querySelector('[data-n="name"]').focus();
+});
+el.addCancel.addEventListener("click", function () {
+  el.addForm.hidden = true;
+  el.addBtn.hidden = false;
+});
+
+el.addForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const payload = { action: "add" };
+  el.addForm.querySelectorAll("[data-n]").forEach(function (input) {
+    payload[input.dataset.n] = input.value.trim();
+  });
+  if (!payload.name) { toast("お名前を入れてください"); return; }
+
+  const btn = el.addForm.querySelector(".save");
+  btn.disabled = true;
+  btn.textContent = "追加中…";
+  try {
+    const r = await call(payload);
+    if (!r.ok) throw new Error(r.error || "追加できませんでした");
+    if (r.guest) guests.unshift(r.guest);
+    el.addForm.reset();
+    el.addForm.hidden = true;
+    el.addBtn.hidden = false;
+    filter = "guest";
+    Array.prototype.forEach.call(el.tabs.children, function (b, i) {
+      b.classList.toggle("is-on", i === 0);
+    });
+    render();
+    toast("追加しました");
+  } catch (err) {
+    toast(String(err.message || err));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "追加する";
+  }
+});
+
 /* ---- 起動 ---- */
 
 /* ログインの往復が成立せず無限ループになる事故を検知するための印。
@@ -439,6 +487,7 @@ async function start() {
     guests = r.guests || [];
     el.who.textContent = me ? me + " さん" : "";
     el.tabs.hidden = false;
+    el.addBtn.hidden = false;
     render();
   } catch (err) {
     fail("サーバーに接続できませんでした。電波状況をご確認ください。", err);

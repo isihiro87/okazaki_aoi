@@ -28,6 +28,24 @@
 </nav>
 
 <main class="wrap">
+  <button type="button" id="addBtn" class="addbtn" hidden>＋ ゲストを追加する</button>
+
+  <form id="addForm" class="addform" hidden>
+    <h2>ゲストを追加</h2>
+    <label><span>お名前 <em>必須</em></span><input type="text" data-n="name" placeholder="例）名古 承悟"></label>
+    <label><span>ふりがな</span><input type="text" data-n="kana" placeholder="例）なご しょうご"></label>
+    <label><span>会社・事業</span><input type="text" data-n="company" placeholder="例）ヤマナ運輸株式会社"></label>
+    <label><span>市区町村</span><input type="text" data-n="city" placeholder="例）岡崎市福岡町"></label>
+    <label><span>業種</span><input type="text" data-n="industry" placeholder="例）運送業"></label>
+    <label><span>ご紹介者</span><input type="text" data-n="referrer" placeholder="例）神道 裕"></label>
+    <label><span>初回来訪日</span><input type="date" data-n="firstVisit"></label>
+    <label><span>メモ</span><textarea data-n="memo" placeholder="話したこと・様子など"></textarea></label>
+    <div class="addform-btns">
+      <button type="submit" class="save">追加する</button>
+      <button type="button" id="addCancel" class="move back">やめる</button>
+    </div>
+  </form>
+
   <p id="msg" class="msg">読み込んでいます…</p>
   <div id="list" class="list"></div>
 </main>

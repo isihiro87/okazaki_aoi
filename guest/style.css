@@ -1,0 +1,56 @@
+/* ============================================================
+   ゲスト様の入力フォーム
+   会場で、初めての方が、スマホで書く。それだけを想定した画面。
+   ============================================================ */
+:root{
+  --ai:#1b2a4a; --akebono:#c9502f; --kinari:#faf7f1;
+  --hai:#6b7280; --keisen:#dcdfe5; --shiro:#fff;
+  --serif:"Shippori Mincho B1",serif; --sans:"Zen Kaku Gothic New",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--kinari);color:#1a1a1a;font-family:var(--sans);
+  font-size:16px;line-height:1.7;-webkit-text-size-adjust:100%}
+.card{max-width:560px;margin:0 auto;background:var(--kinari);min-height:100vh}
+
+.head{background:var(--ai);color:#fff;padding:28px 22px 24px}
+.kai{margin:0 0 6px;font-size:10px;letter-spacing:.22em;color:#c3cddf}
+.head h1{margin:0;font-family:var(--serif);font-size:21px;font-weight:600;letter-spacing:.05em}
+.lead{margin:12px 0 0;font-size:13px;line-height:1.8;color:#dbe2ee}
+
+.form{padding:24px 22px 32px}
+.field{display:block;margin-bottom:20px}
+.label{display:block;font-family:var(--serif);font-size:14px;font-weight:600;margin-bottom:7px}
+.label em{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.06em;
+  border-radius:5px;padding:2px 7px;margin-left:7px;vertical-align:2px;color:#fff;background:var(--akebono)}
+.label em.opt{background:#aab0ba}
+input[type=text],select,textarea{
+  width:100%;padding:13px 14px;font-family:inherit;font-size:16px;color:inherit;
+  background:var(--shiro);border:1px solid var(--keisen);border-radius:9px}
+textarea{min-height:88px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--ai);outline-offset:1px}
+
+.checks{border:0;margin:0 0 20px;padding:0}
+.check{display:inline-flex;align-items:center;gap:8px;margin:0 8px 8px 0;cursor:pointer;
+  border:1px solid var(--keisen);background:var(--shiro);border-radius:999px;padding:9px 15px 9px 12px;font-size:14px}
+.check input{accent-color:var(--ai);width:17px;height:17px}
+
+.btn{display:block;width:100%;margin-top:6px;padding:16px;
+  font-family:inherit;font-size:16px;font-weight:700;color:#fff;background:var(--akebono);
+  border:0;border-radius:10px;cursor:pointer;text-align:center;text-decoration:none}
+.btn:disabled{background:#c9c9c9}
+.btn.line{background:#06c755;margin-top:20px}
+
+.note{margin:12px 0 0;font-size:14px;color:var(--akebono);min-height:1.2em}
+.privacy{margin:18px 0 0;font-size:12px;line-height:1.8;color:var(--hai)}
+.locked{margin:40px 22px;padding:20px;font-size:14px;color:var(--hai);
+  background:var(--shiro);border:1px solid var(--keisen);border-radius:10px;text-align:center}
+
+.done{padding:56px 24px;text-align:center}
+.done .mark{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;
+  background:var(--ai);color:#fff;font-size:30px;line-height:64px}
+.done h2{margin:0 0 12px;font-family:var(--serif);font-size:21px;font-weight:600}
+.done p{margin:0 0 8px;font-size:15px}
+.done-lead{margin-top:20px!important;font-size:15px;line-height:1.9}
+.done-note{margin-top:22px!important;font-size:13px;line-height:1.9;color:var(--hai)}
+
+[hidden]{display:none!important}

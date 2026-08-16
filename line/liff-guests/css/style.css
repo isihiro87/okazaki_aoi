@@ -204,3 +204,30 @@ html, body {
 .claim { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
 .claim .move { flex: 0 0 auto; }
 .claim-now { font-size: 12px; color: var(--hai); }
+
+/* ゲストの追加 */
+.addbtn {
+  width: 100%; margin-bottom: 12px; padding: 13px;
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  color: var(--ai); background: #fff;
+  border: 1.5px dashed var(--ai); border-radius: 10px; cursor: pointer;
+}
+.addform {
+  margin-bottom: 14px; padding: 16px 14px;
+  background: #fff; border: 1.5px solid var(--ai); border-radius: 10px;
+}
+.addform h2 { margin: 0 0 12px; font-size: 15px; color: var(--ai); }
+.addform label { display: block; margin-bottom: 10px; }
+.addform label > span { display: block; margin-bottom: 5px; font-size: 12px; font-weight: 700; color: var(--ai); }
+.addform label > span em {
+  font-style: normal; font-size: 10px; font-weight: 700; color: #fff;
+  background: var(--akebono); border-radius: 4px; padding: 1px 6px; margin-left: 6px;
+}
+.addform input, .addform textarea {
+  width: 100%; padding: 10px 12px;
+  font-family: inherit; font-size: 15px; color: inherit;
+  background: #fff; border: 1px solid var(--keisen); border-radius: 8px;
+}
+.addform textarea { min-height: 64px; resize: vertical; }
+.addform-btns { display: flex; gap: 8px; margin-top: 14px; }
+.addform-btns .save, .addform-btns .move { flex: 1 1 0; margin-top: 0; }

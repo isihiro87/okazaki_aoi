@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご来場ありがとうございます｜岡崎市葵倫理法人会</title>
+<meta name="theme-color" content="#1b2a4a">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/guest/style.css">
+</head>
+<body>
+<main class="card">
+  <header class="head">
+    <p class="kai">OKAZAKI AOI RINRI</p>
+    <h1>ご来場ありがとうございます</h1>
+    <p class="lead">
+      さしつかえのない範囲で、お名前などをお聞かせください。<br>
+      次回のご案内にのみ使わせていただきます。
+    </p>
+  </header>
+
+  <p id="locked" class="locked" hidden>
+    このページは、会場でお配りしているQRコードからお進みください。
+  </p>
+
+  <form id="form" class="form" novalidate>
+    <label class="field">
+      <span class="label">お名前 <em>必須</em></span>
+      <input type="text" id="name" required autocomplete="name" placeholder="例）岡崎 太郎">
+    </label>
+
+    <label class="field">
+      <span class="label">ふりがな <em class="opt">任意</em></span>
+      <input type="text" id="kana" placeholder="例）おかざき たろう">
+    </label>
+
+    <label class="field">
+      <span class="label">会社・お仕事 <em class="opt">任意</em></span>
+      <input type="text" id="company" autocomplete="organization" placeholder="例）株式会社岡崎商店">
+    </label>
+
+    <label class="field">
+      <span class="label">お住まい・事業所の市区町村 <em class="opt">任意</em></span>
+      <input type="text" id="city" placeholder="例）岡崎市">
+    </label>
+
+    <label class="field">
+      <span class="label">業種 <em class="opt">任意</em></span>
+      <input type="text" id="industry" placeholder="例）建設業">
+    </label>
+
+    <label class="field">
+      <span class="label">ご紹介者 <em class="opt">任意</em></span>
+      <input type="text" id="referrer" placeholder="お誘いくださった方のお名前">
+    </label>
+
+    <label class="field">
+      <span class="label">今回で何回目ですか <em class="opt">任意</em></span>
+      <select id="visitCount"></select>
+    </label>
+
+    <fieldset class="field checks">
+      <legend class="label">お越しになったきっかけ <em class="opt">複数選べます</em></legend>
+      <div id="triggers"></div>
+    </fieldset>
+
+    <label class="field">
+      <span class="label">ご感想・ご質問 <em class="opt">任意</em></span>
+      <textarea id="memo" placeholder="差し支えなければ、お聞かせください"></textarea>
+    </label>
+
+    <button type="submit" id="submit" class="btn">送信する</button>
+    <p id="note" class="note"></p>
+    <p class="privacy">
+      いただいた内容は、当会からのご案内にのみ使用します。
+      お電話番号・メールアドレスはお伺いしません。
+    </p>
+  </form>
+
+  <div id="done" class="done" hidden>
+    <div class="mark">✓</div>
+    <h2>ありがとうございました</h2>
+    <p>本日はお越しいただき、ありがとうございます。</p>
+    <p class="done-lead">
+      次回の講話のご案内は、<b>公式LINE</b>でお届けしています。<br>
+      よろしければ友だち追加をお願いいたします。
+    </p>
+    <a class="btn line" id="lineBtn" href="https://line.me/R/ti/p/@458vlpah">公式LINEを友だち追加する</a>
+    <p class="done-note">
+      モーニングセミナーは毎週木曜の朝6時から、イズモホール岡崎貴賓館で開いています。<br>
+      見学は無料で、何度でもお越しいただけます。
+    </p>
+  </div>
+</main>
+
+<script src="/guest/app.js"></script>
+</body>
+</html>

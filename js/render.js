@@ -262,8 +262,10 @@
 
     if (cfg.tel) {
       var telLink = '<a href="tel:' + esc(cfg.tel.replace(/-/g, "")) + '">' + esc(cfg.tel) + "</a>";
-      set("v-tel", telLink + (cfg.telNote ? '<span class="tel-note">（' + esc(cfg.telNote) + "）</span>" : ""));
-      set("v-tel-2", "事務局 " + telLink +
+      set("v-tel", telLink +
+        (cfg.telName ? '<span class="tel-note">（' + esc(cfg.telName) + "）</span>" : "") +
+        (cfg.telNote ? '<span class="tel-note">（' + esc(cfg.telNote) + "）</span>" : ""));
+      set("v-tel-2", (cfg.telName ? esc(cfg.telName) + " " : "") + telLink +
         (cfg.telNote ? "（" + esc(cfg.telNote) + "）" : "") + "<br>");
     }
     if (Array.isArray(cfg.officers) && cfg.officers.length) {

@@ -20,8 +20,9 @@ const SITE = {
   breakfast: "1回400円・パンとお茶",
   breakfastFree: "初めてお越しの方は無料です",
   fee: "月会費 10,000円（1口・1社）",
-  tel: "0564-83-9370",                // 事務局（岡崎市倫理法人会と共用）
-  telNote: "平日 9:00〜17:00",
+  tel: "090-4183-9663",               // 専任幹事 石本大貴の携帯
+  telName: "専任幹事 石本",
+  telNote: "",
   lineUrl: "https://line.me/R/ti/p/@458vlpah",
   memberCount: "約100社",
   officers: [
@@ -132,7 +133,7 @@ const SCHEDULE = [
 const EVENTS = [
   { date:"2027-05-29", title:"倫理経営講演会",
     lead:"岡崎市葵倫理法人会が主催する、年に一度の大きな講演会です。会員以外の方もご参加いただけます。",
-    place:"（会場調整中）", note:"岡崎市倫理法人会との合同開催", featured:true },
+    place:"岡崎市総合学習センター", note:"岡崎市倫理法人会との合同開催", featured:true },
   { date:"", dateText:"2026年12月 開催予定", title:"経営者の集い",
     lead:"経営者どうしが業種を越えて語り合う、年に一度の交流の場です。",
     place:"（会場調整中）" },
