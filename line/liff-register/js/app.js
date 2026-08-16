@@ -12,8 +12,9 @@ const API_ENDPOINT = "https://ao-i.vercel.app/api/members";   // ← aoi アプ�
 
 const OTHER = "その他";
 
-/* 三役（正副）。委員会への配属がないので、選んだら委員会の欄を出さない */
-const EXEC_POSITIONS = ["会長", "副会長", "専任幹事", "副専任幹事", "事務長", "副事務長"];
+/* 委員会への配属がない役職。選んだら委員会の欄を出さない。
+   副専任幹事・事務長・副事務長は委員会に所属するので、ここには入れない。 */
+const NO_COMMITTEE_POSITIONS = ["会長", "副会長", "専任幹事"];
 
 /* 倫理法人会での役職。「副顧問」という役は無いので入れない */
 const ROLES = [
@@ -172,7 +173,7 @@ el.addCommittee.addEventListener("click", function () { addCommitteeRow(); });
 
 /* ---- 「その他」のときだけ自由入力を出す ---- */
 function syncCommitteeVisibility() {
-  const isExec = EXEC_POSITIONS.indexOf(el.role.value) >= 0;
+  const isExec = NO_COMMITTEE_POSITIONS.indexOf(el.role.value) >= 0;
   el.committeeBlock.hidden = isExec;
   el.execNote.hidden = !isExec;
 }
