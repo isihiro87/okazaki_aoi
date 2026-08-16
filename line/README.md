@@ -13,14 +13,32 @@ line/
 │   ├── index.html
 │   ├── css/style.css
 │   └── js/app.js
+├── liff-guests/             ← ④ ゲスト進捗ボード（LIFFアプリ・役員限定）
+│   ├── index.html           ←   受け口は aoi アプリの /api/guests（Firestore）
+│   ├── css/style.css
+│   ├── js/app.js
+│   └── README.md            ←   セットアップと個人情報の扱い
 ├── richmenu/                ← ③ リッチメニュー（最低限）
 │   ├── richmenu.json        ←   メニュー定義（Messaging API）
 │   ├── richmenu-image.svg   ←   メニュー画像のテンプレート（PNGに書き出して使用）
 │   └── README.md            ←   登録手順（curl）
-└── gas/                     ← 登録フォームの保存先（Google Apps Script）
-    ├── Code.gs
+└── gas/                     ← スプレッドシートの受け口（Google Apps Script）
+    ├── Code.gs              ←   会員情報の登録（members シート）
+    ├── Guests.gs            ←   ⚠ 未使用（経緯の記録として保存。下記参照）
+    ├── appsscript.json      ←   ⚠ 未使用（同上）
     └── README.md
 ```
+
+> **ゲスト進捗ボードの受け口は Apps Script ではありません。**
+> 当初 GAS で作りましたが、Google がアカウント側で Apps Script の承認をブロックし、
+> 最小権限のスクリプトすら実行できませんでした（2026/8/15）。
+> そこで **aoi アプリの `/api/guests` + Firestore** に移しています。
+> `CLAUDE.md` の「データ基盤は Firestore ひとつ」にも沿う形です。
+>
+> ゲスト表には氏名・会社名が入るため、認証は二重にかけています。
+> ①LINE の `verify` API で**IDトークンを検証**（なりすまし不可）
+> ②その ユーザーIDで `members` を引き、**役員以上**だけを通す。
+> 詳細は `liff-guests/README.md`。
 
 ## 登場する仕組み（設計書 §2.6 軽量案）
 

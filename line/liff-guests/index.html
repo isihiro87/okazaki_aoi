@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ゲスト進捗｜岡崎市葵倫理法人会</title>
+<meta name="theme-color" content="#1b2a4a">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/line/liff-guests/css/style.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <h1>ゲスト進捗</h1>
+    <p id="who" class="who">読み込んでいます…</p>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs" hidden>
+  <button class="tab is-on" data-filter="follow">要フォロー</button>
+  <button class="tab" data-filter="mine">自分の紹介</button>
+  <button class="tab" data-filter="all">すべて</button>
+</nav>
+
+<main class="wrap">
+  <p id="msg" class="msg">読み込んでいます…</p>
+  <div id="list" class="list"></div>
+</main>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="/line/liff-guests/js/app.js"></script>
+</body>
+</html>

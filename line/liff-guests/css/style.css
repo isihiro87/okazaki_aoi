@@ -1,0 +1,152 @@
+/* ============================================================
+   ゲスト進捗ボード（LIFF）
+   朝のMS直後に、片手で見て・押して・閉じられることだけを狙った画面。
+   ============================================================ */
+
+:root {
+  --ai: #1b2a4a;          /* 藍 */
+  --akebono: #c9502f;     /* 曙 */
+  --kinari: #faf7f1;      /* 生成り */
+  --hai: #6b7280;         /* 灰 */
+  --keisen: #dcdfe5;      /* 罫線 */
+  --sans: "Zen Kaku Gothic New", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--kinari);
+  color: #1a1a1a;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ---- ヘッダー ---- */
+.bar {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--ai); color: #fff;
+  box-shadow: 0 2px 10px rgba(17, 28, 51, .18);
+}
+.bar-in { max-width: 720px; margin: 0 auto; padding: 12px 16px; }
+.bar h1 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: .06em; }
+.who { margin: 2px 0 0; font-size: 12px; color: #c3cddf; }
+
+/* ---- 絞り込みタブ ---- */
+.tabs {
+  position: sticky; top: 56px; z-index: 19;
+  display: flex; gap: 6px;
+  max-width: 720px; margin: 0 auto; padding: 10px 16px;
+  background: var(--kinari);
+  border-bottom: 1px solid var(--keisen);
+}
+.tab {
+  flex: 1 1 0;
+  padding: 9px 4px;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  color: var(--ai); background: #fff;
+  border: 1px solid var(--keisen); border-radius: 999px;
+  cursor: pointer;
+}
+.tab.is-on { color: #fff; background: var(--ai); border-color: var(--ai); }
+
+/* ---- 一覧 ---- */
+.wrap { max-width: 720px; margin: 0 auto; padding: 14px 16px 80px; }
+.msg { margin: 8px 2px; font-size: 14px; color: var(--hai); }
+.list { display: grid; gap: 10px; }
+
+.card {
+  background: #fff;
+  border: 1px solid var(--keisen);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.card.is-open { border-color: var(--ai); box-shadow: 0 3px 14px rgba(17, 28, 51, .12); }
+
+.card-head {
+  display: flex; align-items: flex-start; gap: 10px;
+  width: 100%; padding: 12px 14px;
+  text-align: left; font-family: inherit;
+  background: none; border: 0; cursor: pointer;
+}
+.card-main { flex: 1 1 auto; min-width: 0; }
+.nm { font-size: 16px; font-weight: 700; letter-spacing: .02em; }
+.sub { margin-top: 2px; font-size: 12px; color: var(--hai); overflow-wrap: anywhere; }
+
+.badge {
+  flex: 0 0 auto;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; white-space: nowrap;
+  color: #fff; background: var(--hai);
+}
+.badge[data-s="声かけ中"]   { background: #8a8f98; }
+.badge[data-s="参加予定"]   { background: #2f6f9f; }
+.badge[data-s="参加した"]   { background: #2e7d5b; }
+.badge[data-s="2回目以降"] { background: #1b2a4a; }
+.badge[data-s="入会"]       { background: var(--akebono); }
+.badge[data-s="見送り"]     { background: #b9bfc9; }
+.badge[data-s=""]           { background: #c4c8ce; }
+
+/* ---- 展開部 ---- */
+.body { padding: 0 14px 14px; border-top: 1px dashed var(--keisen); }
+.body[hidden] { display: none; }
+.sec { margin-top: 12px; }
+.sec > .lbl {
+  display: block; margin-bottom: 6px;
+  font-size: 12px; font-weight: 700; color: var(--ai); letter-spacing: .06em;
+}
+.picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.pick {
+  padding: 9px 12px;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  color: var(--ai); background: #fff;
+  border: 1px solid var(--keisen); border-radius: 999px;
+  cursor: pointer;
+}
+.pick.is-on { color: #fff; background: var(--ai); border-color: var(--ai); }
+
+.body input[type="text"], .body textarea {
+  width: 100%; padding: 10px 12px;
+  font-family: inherit; font-size: 15px; color: inherit;
+  background: #fff; border: 1px solid var(--keisen); border-radius: 8px;
+}
+.body textarea { min-height: 70px; resize: vertical; }
+
+.save {
+  width: 100%; margin-top: 14px; padding: 13px;
+  font-family: inherit; font-size: 15px; font-weight: 700;
+  color: #fff; background: var(--akebono);
+  border: 0; border-radius: 8px; cursor: pointer;
+}
+.save:disabled { background: #c9c9c9; }
+
+.meta { margin: 10px 0 0; font-size: 11px; color: var(--hai); }
+
+/* 未許可のときに出す、自分のLINEユーザーID（allowシート登録の依頼用） */
+.uid {
+  display: block; margin-top: 10px; padding: 10px 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px; color: var(--ai); background: #fff;
+  border: 1px solid var(--keisen); border-radius: 8px;
+  overflow-wrap: anywhere; user-select: all;
+}
+
+/* 不具合が起きたときに、原因の手がかりを画面へ出すための欄 */
+.err {
+  display: block; margin-top: 10px; padding: 10px 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px; line-height: 1.7; color: var(--hai);
+  background: #fff; border: 1px solid var(--keisen); border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+
+/* ---- トースト ---- */
+.toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+  z-index: 40; padding: 10px 18px;
+  font-size: 14px; color: #fff; background: rgba(27, 42, 74, .94);
+  border-radius: 999px; box-shadow: 0 4px 16px rgba(17, 28, 51, .3);
+}
+.toast[hidden] { display: none; }
