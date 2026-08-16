@@ -17,9 +17,11 @@ const STATUSES = ["声かけ中", "参加予定", "参加した", "2回目以降
 /* 「要フォロー」タブに出すステータス（＝まだ結論が出ていない人） */
 const FOLLOW = ["声かけ中", "参加予定", "参加した", "2回目以降"];
 
-/* 基本情報の欄。［data属性名, 見出し, 例示］ */
+/* カードを開いたらすぐ直せる欄 */
+const NAME_FIELD = ["name", "お名前", "例）名古 承悟"];
+
+/* 折りたたみの中に置く欄。［data属性名, 見出し, 例示］ */
 const FIELDS = [
-  ["name", "お名前", "例）名古 承悟"],
   ["kana", "ふりがな", "例）なご しょうご"],
   ["company", "会社・事業", "例）ヤマナ運輸株式会社"],
   ["city", "市区町村", "例）岡崎市福岡町"],
@@ -86,11 +88,12 @@ function cardHtml(g) {
       '" data-pick="' + esc(s) + '">' + esc(s) + "</button>";
   }).join("");
 
-  const basics = FIELDS.map(function (f) {
+  const fieldHtml = function (f) {
     return '<label class="sec"><span class="lbl">' + esc(f[1]) + "</span>" +
       '<input type="text" data-f="' + f[0] + '" value="' + esc(g[f[0]]) +
       '" placeholder="' + esc(f[2]) + '"></label>';
-  }).join("");
+  };
+  const basics = FIELDS.map(fieldHtml).join("");
 
   return '' +
     '<article class="card' + (open ? " is-open" : "") + '" data-id="' + esc(g.id) + '">' +
@@ -102,6 +105,7 @@ function cardHtml(g) {
         '<span class="badge" data-s="' + esc(g.status) + '">' + esc(g.status || "未設定") + "</span>" +
       "</button>" +
       '<div class="body"' + (open ? "" : " hidden") + ">" +
+        fieldHtml(NAME_FIELD) +
         '<div class="sec"><span class="lbl">いまの進み具合</span>' +
           '<div class="picks">' + picks + "</div></div>" +
         '<label class="sec"><span class="lbl">次にやること</span>' +
@@ -111,7 +115,7 @@ function cardHtml(g) {
           '<input type="text" data-f="owner" value="' + esc(g.owner) + '" placeholder="例）神道 裕"></label>' +
         '<label class="sec"><span class="lbl">メモ</span>' +
           '<textarea data-f="memo" placeholder="話したこと・様子など">' + esc(g.memo) + "</textarea></label>" +
-        '<details class="more"><summary>お名前・会社などを直す</summary>' + basics + "</details>" +
+        '<details class="more"><summary>会社・紹介者・初回来訪日などを直す</summary>' + basics + "</details>" +
         '<button type="button" class="save" data-save>保存する</button>' +
         '<p class="meta">' +
           (g.updatedAt ? "最終更新 " + esc(fmtWhen(g.updatedAt)) + (g.updatedBy ? "（" + esc(g.updatedBy) + "）" : "") : "未更新") +
