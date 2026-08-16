@@ -5,7 +5,7 @@
    ↓ 2か所を実値に差し替えてください。
    ============================================================ */
 const LIFF_ID = "2010379578-SHlRwAxA";                                  // ← LINE Developers の LIFF ID
-const GAS_ENDPOINT = "https://script.google.com/macros/s/XXXXXXXX/exec"; // ← GAS WebアプリのURL
+const API_ENDPOINT = "https://ao-i.vercel.app/api/members";             // ← aoi アプリの API
 
 /* 役職(倫理法人会内)。並び順そのまま表示。最後の「その他」選択で自由入力欄を表示 */
 const ROLES = [
@@ -19,7 +19,7 @@ const ROLES = [
 
 /* 委員会。最後の「その他」選択で自由入力欄を表示 */
 const COMMITTEES = [
-  "MS委員会", "朝礼委員会", "広報委員会", "研修委員会", "女性委員会", "その他",
+  "MS委員会", "朝礼委員会", "広報委員会", "研修委員会", "女性委員会", "活性化委員会", "その他",
 ];
 
 const OTHER = "その他";
@@ -48,12 +48,17 @@ function toggleOther(select, otherWrap) {
 roleSelect.addEventListener("change", function () { toggleOther(roleSelect, roleOther); });
 committeeSelect.addEventListener("change", function () { toggleOther(committeeSelect, committeeOther); });
 
+/* 本人確認に使うトークン。LINEユーザーIDは画面からの申告ではなく、
+   これをサーバー側で検証して得たものを使う（他人になりすませない） */
+let idToken = "";
+
 /* ---- LIFF 初期化(LINEユーザーIDの取得) ---- */
 async function initLiff() {
   const note = document.getElementById("note");
   try {
     await liff.init({ liffId: LIFF_ID });
     if (!liff.isLoggedIn()) { liff.login(); return; }
+    idToken = liff.getIDToken();
     const profile = await liff.getProfile();
     document.getElementById("lineUserId").value = profile.userId;
     document.getElementById("lineDisplayName").value = profile.displayName;
@@ -82,8 +87,7 @@ form.addEventListener("submit", async function (e) {
     .join("・"); // 例: "リーダー" / "サブリーダー" / "リーダー・サブリーダー"
 
   const payload = {
-    lineUserId: document.getElementById("lineUserId").value,
-    lineDisplayName: document.getElementById("lineDisplayName").value,
+    idToken: idToken,
     name: document.getElementById("name").value.trim(),
     company: document.getElementById("company").value.trim(),
     role: role,
@@ -91,13 +95,21 @@ form.addEventListener("submit", async function (e) {
     committeeRole: committeeRoles,
   };
 
+  if (!idToken) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "登録する";
+    alert("LINEアプリの中から開いてください。本人確認ができないため登録できません。");
+    return;
+  }
+
   try {
-    // GAS は text/plain で受けるとプリフライト不要。doPost 側で JSON.parse する。
-    await fetch(GAS_ENDPOINT, {
+    const res = await fetch(API_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+    const result = await res.json();
+    if (!result.ok) throw new Error(result.error || "登録できませんでした");
     form.hidden = true;
     doneBox.hidden = false;
     if (typeof liff !== "undefined" && liff.isInClient && liff.isInClient()) {

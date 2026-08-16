@@ -94,3 +94,11 @@ input:focus,select:focus{outline:none;border-color:var(--akebono);box-shadow:0 0
 }
 .done h2{font-family:var(--serif);font-size:20px;font-weight:700;letter-spacing:.04em;margin-bottom:10px}
 .done p{font-size:14px;color:var(--hai)}
+
+/* 承認待ちの案内。本文より控えめに */
+.done-note {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #6b7280;
+}

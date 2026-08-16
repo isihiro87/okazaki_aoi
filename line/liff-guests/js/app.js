@@ -17,6 +17,17 @@ const STATUSES = ["声かけ中", "参加予定", "参加した", "2回目以降
 /* 「要フォロー」タブに出すステータス（＝まだ結論が出ていない人） */
 const FOLLOW = ["声かけ中", "参加予定", "参加した", "2回目以降"];
 
+/* 基本情報の欄。［data属性名, 見出し, 例示］ */
+const FIELDS = [
+  ["name", "お名前", "例）名古 承悟"],
+  ["kana", "ふりがな", "例）なご しょうご"],
+  ["company", "会社・事業", "例）ヤマナ運輸株式会社"],
+  ["city", "市区町村", "例）岡崎市福岡町"],
+  ["industry", "業種", "例）運送業"],
+  ["referrer", "紹介者", "例）神道 裕"],
+  ["firstVisit", "初回来訪日", "例）2026-07-30"],
+];
+
 const el = {
   who: document.getElementById("who"),
   tabs: document.getElementById("tabs"),
@@ -75,6 +86,12 @@ function cardHtml(g) {
       '" data-pick="' + esc(s) + '">' + esc(s) + "</button>";
   }).join("");
 
+  const basics = FIELDS.map(function (f) {
+    return '<label class="sec"><span class="lbl">' + esc(f[1]) + "</span>" +
+      '<input type="text" data-f="' + f[0] + '" value="' + esc(g[f[0]]) +
+      '" placeholder="' + esc(f[2]) + '"></label>';
+  }).join("");
+
   return '' +
     '<article class="card' + (open ? " is-open" : "") + '" data-id="' + esc(g.id) + '">' +
       '<button type="button" class="card-head" data-toggle>' +
@@ -87,18 +104,34 @@ function cardHtml(g) {
       '<div class="body"' + (open ? "" : " hidden") + ">" +
         '<div class="sec"><span class="lbl">いまの進み具合</span>' +
           '<div class="picks">' + picks + "</div></div>" +
-        '<div class="sec"><span class="lbl">次にやること</span>' +
-          '<input type="text" data-next value="' + esc(g.nextAction) + '" placeholder="例）8/20のMSにお誘いする"></div>' +
-        '<div class="sec"><span class="lbl">担当</span>' +
-          '<input type="text" data-owner value="' + esc(g.owner) + '" placeholder="例）神道 裕"></div>' +
-        '<div class="sec"><span class="lbl">メモ</span>' +
-          '<textarea data-memo placeholder="話したこと・様子など">' + esc(g.memo) + "</textarea></div>" +
+        '<label class="sec"><span class="lbl">次にやること</span>' +
+          '<input type="text" data-f="nextAction" value="' + esc(g.nextAction) +
+          '" placeholder="例）8/20のMSにお誘いする"></label>' +
+        '<label class="sec"><span class="lbl">担当</span>' +
+          '<input type="text" data-f="owner" value="' + esc(g.owner) + '" placeholder="例）神道 裕"></label>' +
+        '<label class="sec"><span class="lbl">メモ</span>' +
+          '<textarea data-f="memo" placeholder="話したこと・様子など">' + esc(g.memo) + "</textarea></label>" +
+        '<details class="more"><summary>お名前・会社などを直す</summary>' + basics + "</details>" +
         '<button type="button" class="save" data-save>保存する</button>' +
         '<p class="meta">' +
-          (g.updatedAt ? "最終更新 " + esc(g.updatedAt) + (g.updatedBy ? "（" + esc(g.updatedBy) + "）" : "") : "未更新") +
+          (g.updatedAt ? "最終更新 " + esc(fmtWhen(g.updatedAt)) + (g.updatedBy ? "（" + esc(g.updatedBy) + "）" : "") : "未更新") +
         "</p>" +
+        '<div class="danger">' +
+          '<button type="button" class="del-open" data-del-open>このゲストを削除する</button>' +
+          '<div class="del-confirm" hidden>' +
+            "<p>削除すると元に戻せません。よろしいですか。</p>" +
+            '<button type="button" class="del-yes" data-del-yes>削除する</button>' +
+            '<button type="button" class="del-no" data-del-no>やめる</button>' +
+          "</div>" +
+        "</div>" +
       "</div>" +
     "</article>";
+}
+
+/** ISO日時を「2026/08/16」に丸める。「たった今」などはそのまま返す */
+function fmtWhen(value) {
+  const m = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? m[1] + "/" + m[2] + "/" + m[3] : value;
 }
 
 function render() {
@@ -137,28 +170,61 @@ el.list.addEventListener("click", async function (e) {
     return;
   }
 
+  // ---- 削除は二段構え ----
+  if (e.target.closest("[data-del-open]")) {
+    card.querySelector(".del-confirm").hidden = false;
+    card.querySelector(".del-open").hidden = true;
+    return;
+  }
+  if (e.target.closest("[data-del-no]")) {
+    card.querySelector(".del-confirm").hidden = true;
+    card.querySelector(".del-open").hidden = false;
+    return;
+  }
+  const delYes = e.target.closest("[data-del-yes]");
+  if (delYes) {
+    delYes.disabled = true;
+    delYes.textContent = "削除中…";
+    try {
+      const r = await call({ action: "delete", id: id });
+      if (!r.ok) throw new Error(r.error || "削除できませんでした");
+      guests = guests.filter(function (x) { return x.id !== id; });
+      openId = null;
+      render();
+      toast("削除しました");
+    } catch (err) {
+      delYes.disabled = false;
+      delYes.textContent = "削除する";
+      toast(String(err.message || err));
+    }
+    return;
+  }
+
+  // ---- 保存 ----
   const save = e.target.closest("[data-save]");
   if (save) {
     const on = card.querySelector("[data-pick].is-on");
-    const payload = {
-      action: "update",
-      id: id,
-      status: on ? on.dataset.pick : "",
-      nextAction: card.querySelector("[data-next]").value.trim(),
-      owner: card.querySelector("[data-owner]").value.trim(),
-      memo: card.querySelector("[data-memo]").value.trim(),
-    };
+    const payload = { action: "update", id: id, status: on ? on.dataset.pick : "" };
+    card.querySelectorAll("[data-f]").forEach(function (input) {
+      payload[input.dataset.f] = input.value.trim();
+    });
+
+    if (!payload.name) {
+      toast("お名前は空にできません");
+      return;
+    }
+
     save.disabled = true;
     save.textContent = "保存中…";
     try {
       const r = await call(payload);
       if (!r.ok) throw new Error(r.error || "保存できませんでした");
       const g = guests.find(function (x) { return x.id === id; });
-      Object.assign(g, {
-        status: payload.status, nextAction: payload.nextAction,
-        owner: payload.owner, memo: payload.memo,
-        updatedAt: "たった今", updatedBy: me,
+      Object.keys(payload).forEach(function (k) {
+        if (k !== "action" && k !== "id") g[k] = payload[k];
       });
+      g.updatedBy = me;
+      g.updatedAt = "たった今";
       openId = null;
       render();
       toast("保存しました");
