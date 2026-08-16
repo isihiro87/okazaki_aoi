@@ -12,6 +12,9 @@ const API_ENDPOINT = "https://ao-i.vercel.app/api/members";   // ← aoi アプ�
 
 const OTHER = "その他";
 
+/* 三役（正副）。委員会への配属がないので、選んだら委員会の欄を出さない */
+const EXEC_POSITIONS = ["会長", "副会長", "専任幹事", "副専任幹事", "事務長", "副事務長"];
+
 /* 倫理法人会での役職。「副顧問」という役は無いので入れない */
 const ROLES = [
   "顧問", "相談役",
@@ -70,6 +73,7 @@ const el = {
   kindStep: $("kindStep"), form: $("regForm"), kindLabel: $("kindLabel"), backBtn: $("backBtn"),
   secAoi: $("secAoi"), secGuest: $("secGuest"), secOther: $("secOther"),
   role: $("role"), roleOther: $("roleOther"),
+  committeeBlock: $("committeeBlock"), execNote: $("execNote"),
   committeeList: $("committeeList"), addCommittee: $("addCommittee"),
   visitCount: $("visitCount"), triggerList: $("triggerList"), triggerOther: $("triggerOther"),
   kaiFilter: $("kaiFilter"), kaiName: $("kaiName"), kaiAichi: $("kaiAichi"),
@@ -167,8 +171,15 @@ function addCommitteeRow(value, roleValue) {
 el.addCommittee.addEventListener("click", function () { addCommitteeRow(); });
 
 /* ---- 「その他」のときだけ自由入力を出す ---- */
+function syncCommitteeVisibility() {
+  const isExec = EXEC_POSITIONS.indexOf(el.role.value) >= 0;
+  el.committeeBlock.hidden = isExec;
+  el.execNote.hidden = !isExec;
+}
+
 el.role.addEventListener("change", function () {
   el.roleOther.hidden = el.role.value !== OTHER;
+  syncCommitteeVisibility();
 });
 el.triggerList.addEventListener("change", function () {
   const other = el.triggerList.querySelector('input[value="' + OTHER + '"]');
@@ -207,6 +218,8 @@ el.backBtn.addEventListener("click", function () {
 
 /* ---- 送信 ---- */
 function committeesFromForm() {
+  // 三役は委員会の配属がないので、隠している欄の中身は送らない
+  if (el.committeeBlock.hidden) return [];
   const out = [];
   el.committeeList.querySelectorAll(".cmrow").forEach(function (row) {
     const select = row.querySelector(".cm-name");
@@ -336,6 +349,7 @@ el.editBtn.addEventListener("click", function () {
       el.roleOther.hidden = false;
       el.roleOther.querySelector("input").value = d.position;
     }
+    syncCommitteeVisibility();
     el.committeeList.innerHTML = "";
     (d.committees && d.committees.length ? d.committees : [""]).forEach(function (c) {
       const m = String(c).match(/^(.*?)（(.*)）$/);
