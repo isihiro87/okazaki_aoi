@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>会員情報の登録｜岡崎市葵倫理法人会</title>
+<title>登録フォーム｜岡崎市葵倫理法人会</title>
 <meta name="theme-color" content="#1b2a4a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,14 +15,45 @@
   <header class="head">
     <div class="head-in">
       <p class="kai">OKAZAKI AOI RINRI</p>
-      <h1>会員情報の登録</h1>
-      <p id="greet" class="greet">お名前・役職・委員会をご登録ください。</p>
+      <h1>登録フォーム</h1>
+      <p id="greet" class="greet">お名前などをご登録ください。</p>
     </div>
   </header>
 
-  <form id="regForm" class="form" novalidate>
-    <input type="hidden" id="lineUserId">
-    <input type="hidden" id="lineDisplayName">
+  <!-- 読み込み中 -->
+  <p id="loading" class="note">読み込んでいます…</p>
+
+  <!-- すでに登録済みの方 -->
+  <div id="already" class="done" hidden>
+    <div class="done-mark">✓</div>
+    <h2>すでにご入力済みです</h2>
+    <p class="done-note">ご登録ありがとうございます。重ねてのご入力は必要ありません。</p>
+    <dl id="alreadyBody" class="summary"></dl>
+    <p id="pendingNote" class="done-note" hidden>
+      役職に応じた機能は、専任幹事が確認してから使えるようになります。しばらくお待ちください。
+    </p>
+    <button type="button" id="editBtn" class="btn ghost">内容を修正する</button>
+  </div>
+
+  <!-- 区分の選択 -->
+  <div id="kindStep" class="form" hidden>
+    <p class="lead">はじめに、あてはまるものをお選びください。</p>
+    <button type="button" class="kind" data-kind="aoi">
+      <b>岡崎市葵倫理法人会の会員</b><span>役職・委員会をご登録ください</span>
+    </button>
+    <button type="button" class="kind" data-kind="guest">
+      <b>ゲスト（見学の方）</b><span>モーニングセミナーにお越しの方</span>
+    </button>
+    <button type="button" class="kind" data-kind="other_kai">
+      <b>他単会の会員</b><span>所属の単会をお選びください</span>
+    </button>
+  </div>
+
+  <form id="regForm" class="form" novalidate hidden>
+    <p class="kindline">
+      <span id="kindLabel"></span>
+      <button type="button" id="backBtn" class="linkbtn">変更する</button>
+    </p>
 
     <label class="field">
       <span class="label">お名前 <em>必須</em></span>
@@ -30,33 +61,75 @@
     </label>
 
     <label class="field">
-      <span class="label">会社名 <em class="opt">任意</em></span>
+      <span class="label">会社・事業 <em class="opt">任意</em></span>
       <input type="text" id="company" autocomplete="organization" placeholder="例）有限会社小久井農場">
     </label>
 
-    <label class="field">
-      <span class="label">倫理法人会での役職 <em>必須</em></span>
-      <select id="role" required></select>
-    </label>
-    <div class="field other" id="roleOther" hidden>
-      <span class="label">役職（自由入力）</span>
-      <input type="text" placeholder="役職をご入力ください">
+    <!-- ▼ 葵の会員 -->
+    <div id="secAoi" hidden>
+      <label class="field">
+        <span class="label">倫理法人会での役職 <em>必須</em></span>
+        <select id="role"></select>
+      </label>
+      <div class="field other" id="roleOther" hidden>
+        <span class="label">役職（ご入力ください）</span>
+        <input type="text" placeholder="例）副幹事長">
+      </div>
+
+      <div class="field">
+        <span class="label">所属委員会</span>
+        <div id="committeeList"></div>
+        <button type="button" id="addCommittee" class="linkbtn add">＋ 委員会を追加する</button>
+        <p class="hint">複数の委員会に所属されている場合は、追加してください。</p>
+      </div>
     </div>
 
-    <label class="field">
-      <span class="label">所属委員会 <em>必須</em></span>
-      <select id="committee" required></select>
-    </label>
-    <div class="field other" id="committeeOther" hidden>
-      <span class="label">委員会（自由入力）</span>
-      <input type="text" placeholder="委員会名をご入力ください">
+    <!-- ▼ ゲスト -->
+    <div id="secGuest" hidden>
+      <label class="field">
+        <span class="label">ご紹介者 <em class="opt">任意</em></span>
+        <input type="text" id="referrer" placeholder="例）神道 裕">
+      </label>
+
+      <label class="field">
+        <span class="label">今回で何回目ですか <em>必須</em></span>
+        <select id="visitCount"></select>
+      </label>
+
+      <fieldset class="field roles">
+        <legend class="label">お越しになったきっかけ <em class="opt">複数選べます</em></legend>
+        <div id="triggerList"></div>
+      </fieldset>
+      <div class="field other" id="triggerOther" hidden>
+        <span class="label">きっかけ（ご入力ください）</span>
+        <input type="text" placeholder="差し支えなければお書きください">
+      </div>
     </div>
 
-    <fieldset class="field roles">
-      <legend class="label">委員会での役割（該当する場合）</legend>
-      <label class="check"><input type="checkbox" name="committeeRole" value="リーダー"><span>リーダー</span></label>
-      <label class="check"><input type="checkbox" name="committeeRole" value="サブリーダー"><span>サブリーダー</span></label>
-    </fieldset>
+    <!-- ▼ 他単会 -->
+    <div id="secOther" hidden>
+      <fieldset class="field roles">
+        <legend class="label">所属単会 <em>必須</em></legend>
+        <label class="check"><input type="radio" name="kaiArea" value="aichi" checked><span>愛知県内</span></label>
+        <label class="check"><input type="radio" name="kaiArea" value="other"><span>愛知県外</span></label>
+      </fieldset>
+
+      <div class="field" id="kaiAichi">
+        <span class="label">単会をお選びください</span>
+        <input type="search" id="kaiFilter" placeholder="単会名で絞り込む（例：とよ）" autocomplete="off">
+        <select id="kaiName" size="8"></select>
+      </div>
+
+      <div class="field" id="kaiFree" hidden>
+        <span class="label">単会名 <em>必須</em></span>
+        <input type="text" id="kaiOther" placeholder="例）静岡県 浜松市倫理法人会">
+      </div>
+
+      <label class="field">
+        <span class="label">単会での役職 <em class="opt">任意</em></span>
+        <input type="text" id="otherPosition" placeholder="例）専任幹事">
+      </label>
+    </div>
 
     <button type="submit" id="submitBtn" class="btn">登録する</button>
     <p id="note" class="note"></p>
@@ -66,8 +139,7 @@
   <div id="done" class="done" hidden>
     <div class="done-mark">✓</div>
     <h2>ご登録ありがとうございました</h2>
-    <p>内容に変更があれば、メニュー「会員登録」からいつでも更新できます。</p>
-    <p class="done-note">役職に応じた機能（AIの役員向け回答・ゲスト進捗など）は、専任幹事が確認してから使えるようになります。しばらくお待ちください。</p>
+    <p id="doneMsg"></p>
   </div>
 </main>
 

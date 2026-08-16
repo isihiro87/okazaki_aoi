@@ -102,3 +102,57 @@ input:focus,select:focus{outline:none;border-color:var(--akebono);box-shadow:0 0
   line-height: 1.7;
   color: #6b7280;
 }
+
+/* ---- 区分の選択 ---- */
+.lead { margin: 0 0 14px; font-size: 14px; color: #444; }
+.kind {
+  display: block; width: 100%; margin-bottom: 10px; padding: 16px 18px;
+  text-align: left; font-family: inherit; cursor: pointer;
+  background: #fff; border: 1.5px solid #dcdfe5; border-radius: 10px;
+}
+.kind b { display: block; font-size: 16px; color: #1b2a4a; }
+.kind span { display: block; margin-top: 3px; font-size: 12px; color: #6b7280; }
+.kind:hover, .kind:focus { border-color: #1b2a4a; }
+
+/* 選んだ区分の表示と戻るボタン */
+.kindline {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin: 0 0 18px; padding: 10px 12px;
+  font-size: 14px; font-weight: 700; color: #1b2a4a;
+  background: #eef1f6; border-radius: 8px;
+}
+.linkbtn {
+  font-family: inherit; font-size: 13px; font-weight: 700; color: #c9502f;
+  background: none; border: 0; cursor: pointer; text-decoration: underline;
+  padding: 4px;
+}
+.linkbtn.add { display: inline-block; margin-top: 8px; }
+.hint { margin: 6px 0 0; font-size: 12px; color: #6b7280; }
+
+/* ---- 委員会の行（複数登録できる） ---- */
+.cmrow {
+  padding: 12px; margin-bottom: 10px;
+  background: #fafbfd; border: 1px solid #e6e9ee; border-radius: 8px;
+}
+.cmrow + .cmrow { margin-top: 8px; }
+.cm-roles { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; }
+.cm-roles .check { margin: 0; }
+.cm-roles .cm-del { margin-left: auto; color: #a33; }
+
+/* ---- 単会の絞り込み ---- */
+#kaiFilter { margin-bottom: 8px; }
+#kaiName { height: auto; }
+#kaiName optgroup { font-size: 12px; color: #6b7280; }
+#kaiName option { padding: 6px 4px; font-size: 15px; color: #1a1a1a; }
+
+/* ---- 登録済みの表示 ---- */
+.summary {
+  margin: 16px 0 0; padding: 14px; text-align: left;
+  background: #fafbfd; border: 1px solid #e6e9ee; border-radius: 8px;
+  display: grid; grid-template-columns: 6.5em 1fr; gap: 6px 10px;
+}
+.summary dt { font-size: 12px; font-weight: 700; color: #6b7280; }
+.summary dd { margin: 0; font-size: 14px; }
+.btn.ghost {
+  margin-top: 16px; color: #1b2a4a; background: #fff; border: 1.5px solid #dcdfe5;
+}
