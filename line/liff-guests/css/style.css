@@ -180,3 +180,6 @@ html, body {
   border-radius: 999px; box-shadow: 0 4px 16px rgba(17, 28, 51, .3);
 }
 .toast[hidden] { display: none; }
+
+/* hidden 属性が display 指定に負けるのを一括で止める（登録フォームで実際に起きた） */
+[hidden] { display: none !important; }

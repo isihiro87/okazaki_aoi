@@ -351,6 +351,23 @@ el.editBtn.addEventListener("click", function () {
     });
   }
 
+  if (d.kind === "guest") {
+    $("referrer").value = d.referrer || "";
+    if (d.visitCount) el.visitCount.value = d.visitCount;
+    const known = TRIGGERS.slice(0, -1);
+    (d.triggers || []).forEach(function (t) {
+      if (known.indexOf(t) >= 0) {
+        const box = el.triggerList.querySelector('input[value="' + t.replace(/"/g, '') + '"]');
+        if (box) box.checked = true;
+      } else {
+        const other = el.triggerList.querySelector('input[value="' + OTHER + '"]');
+        if (other) other.checked = true;
+        el.triggerOther.hidden = false;
+        el.triggerOther.querySelector("input").value = t;
+      }
+    });
+  }
+
   if (d.kind === "other_kai" && d.kaiName) {
     const bare = String(d.kaiName).replace(/倫理法人会$/, "");
     const known = KAI_GROUPS.some(function (g) { return g.items.indexOf(bare) >= 0; });

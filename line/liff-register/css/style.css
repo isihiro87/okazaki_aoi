@@ -156,3 +156,8 @@ input:focus,select:focus{outline:none;border-color:var(--akebono);box-shadow:0 0
 .btn.ghost {
   margin-top: 16px; color: #1b2a4a; background: #fff; border: 1.5px solid #dcdfe5;
 }
+
+/* ★ hidden 属性は display 指定に負ける。
+   .field{display:block} などがあると、hidden を付けた欄が出たままになる。
+   個別に打ち消すと必ず漏れるので、ここで一括して止める。 */
+[hidden] { display: none !important; }
