@@ -14,8 +14,14 @@ const API_ENDPOINT = "https://ao-i.vercel.app/api/guests";          // ← aoi �
 
 /* aoi 側（src/lib/guests/repository.ts）の GUEST_STATUSES と必ず同じにすること */
 const STATUSES = ["声かけ中", "参加予定", "参加した", "2回目以降", "入会", "見送り"];
-/* 「要フォロー」タブに出すステータス（＝まだ結論が出ていない人） */
-const FOLLOW = ["声かけ中", "参加予定", "参加した", "2回目以降"];
+
+/* 進み具合として選ぶのはこの4つ。
+   「入会」と「見送り」は進み具合ではなく結論なので、下のボタンで移す。 */
+const PROGRESS = ["声かけ中", "参加予定", "参加した", "2回目以降"];
+const JOINED = "入会";
+const LOST = "見送り";
+/* リストへ戻したときの既定 */
+const BACK_TO_GUEST = "声かけ中";
 
 /* カードを開いたらすぐ直せる欄 */
 const NAME_FIELD = ["name", "お名前", "例）名古 承悟"];
@@ -42,7 +48,7 @@ let idToken = "";
 let myUserId = "";
 let me = "";
 let guests = [];
-let filter = "follow";
+let filter = "guest";
 let openId = null;
 
 /* ---- 通信 ---- */
@@ -68,22 +74,34 @@ function esc(s) {
 }
 
 /* ---- 描画 ---- */
+function inGuestList(g) {
+  return g.status !== JOINED && g.status !== LOST;
+}
+
 function visible() {
-  if (filter === "all") return guests;
+  if (filter === "joined") return guests.filter(function (g) { return g.status === JOINED; });
+  if (filter === "lost") return guests.filter(function (g) { return g.status === LOST; });
   if (filter === "mine") {
     return guests.filter(function (g) {
       return (g.referrer && g.referrer.indexOf(me) >= 0) || (g.owner && g.owner.indexOf(me) >= 0);
     });
   }
-  return guests.filter(function (g) { return FOLLOW.indexOf(g.status) >= 0 || !g.status; });
+  return guests.filter(inGuestList);
 }
+
+const EMPTY_MESSAGE = {
+  guest: "ゲストリストは空です。",
+  joined: "入会された方はまだいません。",
+  lost: "見込み無しに入れた方はいません。",
+  mine: "あなたが紹介・担当しているゲストはいません。",
+};
 
 function cardHtml(g) {
   const open = g.id === openId;
   const sub = [g.company, g.referrer ? "紹介：" + g.referrer : "", g.firstVisit ? "初回 " + g.firstVisit : ""]
     .filter(Boolean).join("　/　");
 
-  const picks = STATUSES.map(function (s) {
+  const picks = PROGRESS.map(function (s) {
     return '<button type="button" class="pick' + (s === g.status ? " is-on" : "") +
       '" data-pick="' + esc(s) + '">' + esc(s) + "</button>";
   }).join("");
@@ -120,6 +138,7 @@ function cardHtml(g) {
         '<p class="meta">' +
           (g.updatedAt ? "最終更新 " + esc(fmtWhen(g.updatedAt)) + (g.updatedBy ? "（" + esc(g.updatedBy) + "）" : "") : "未更新") +
         "</p>" +
+        moveButtons(g) +
         '<div class="danger">' +
           '<button type="button" class="del-open" data-del-open>このゲストを削除する</button>' +
           '<div class="del-confirm" hidden>' +
@@ -138,11 +157,21 @@ function fmtWhen(value) {
   return m ? m[1] + "/" + m[2] + "/" + m[3] : value;
 }
 
+/** リストを移すボタン。いまどのリストに居るかで出し分ける */
+function moveButtons(g) {
+  if (g.status === JOINED || g.status === LOST) {
+    return '<div class="moves"><button type="button" class="move back" data-move="">' +
+      "ゲストリストに戻す</button></div>";
+  }
+  return '<div class="moves">' +
+    '<button type="button" class="move join" data-move="' + JOINED + '">入会された</button>' +
+    '<button type="button" class="move lost" data-move="' + LOST + '">見込み無しに入れる</button>' +
+    "</div>";
+}
+
 function render() {
   const rows = visible();
-  el.msg.textContent = rows.length
-    ? rows.length + "名"
-    : (filter === "mine" ? "あなたが紹介・担当しているゲストはいません。" : "該当するゲストはいません。");
+  el.msg.textContent = rows.length ? rows.length + "名" : (EMPTY_MESSAGE[filter] || "該当がありません。");
   el.list.innerHTML = rows.map(cardHtml).join("");
 }
 
@@ -171,6 +200,35 @@ el.list.addEventListener("click", async function (e) {
   if (pick) {
     card.querySelectorAll("[data-pick]").forEach(function (b) { b.classList.remove("is-on"); });
     pick.classList.add("is-on");
+    return;
+  }
+
+  // ---- リストを移す ----
+  const move = e.target.closest("[data-move]");
+  if (move) {
+    const next = move.dataset.move === "" ? BACK_TO_GUEST : move.dataset.move;
+    move.disabled = true;
+    const label = move.textContent;
+    move.textContent = "移動中…";
+    try {
+      const r = await call({ action: "update", id: id, status: next });
+      if (!r.ok) throw new Error(r.error || "移動できませんでした");
+      const g = guests.find(function (x) { return x.id === id; });
+      g.status = next;
+      g.updatedBy = me;
+      g.updatedAt = "たった今";
+      openId = null;
+      render();
+      toast(
+        next === JOINED ? "入会者リストへ移しました"
+          : next === LOST ? "見込み無しリストへ移しました"
+          : "ゲストリストへ戻しました"
+      );
+    } catch (err) {
+      move.disabled = false;
+      move.textContent = label;
+      toast(String(err.message || err));
+    }
     return;
   }
 

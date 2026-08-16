@@ -144,6 +144,22 @@ html, body {
 .more > summary::before { content: "▸ "; }
 .more[open] > summary::before { content: "▾ "; }
 
+/* リストを移すボタン（入会／見込み無し／戻す） */
+.moves { display: flex; gap: 8px; margin-top: 14px; }
+.move {
+  flex: 1 1 0; padding: 12px 8px;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  border-radius: 8px; cursor: pointer;
+}
+.move:disabled { opacity: .6; }
+.move.join { color: #fff; background: #2e7d5b; border: 0; }
+.move.lost { color: #6b7280; background: #fff; border: 1px solid var(--keisen); }
+.move.back { color: var(--ai); background: #fff; border: 1.5px solid var(--ai); }
+
+/* タブが4つ入るので、文字を少し詰める */
+.tabs .tab { font-size: 12.5px; padding: 9px 2px; }
+
+/* 削除は目立たせない。日常の操作はリスト移動のほうなので */
 /* 削除。押し間違いが起きないよう二段構えにする */
 .danger { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--keisen); }
 .del-open {
