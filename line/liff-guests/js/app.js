@@ -78,14 +78,25 @@ function inGuestList(g) {
   return g.status !== JOINED && g.status !== LOST;
 }
 
+/* 氏名の表記ゆれを吸収する。
+   紹介者欄はチラシや記録から起こした自由入力なので、
+   会員登録の氏名（例「石本 大貴」）と形が違う（例「石本大貴」）。 */
+function normName(v) {
+  return String(v == null ? "" : v).normalize("NFKC").replace(/\s/g, "");
+}
+
+/** その人が担当・紹介者にあたるか。IDがあればIDを優先する */
+function isMine(g) {
+  if (g.ownerId && g.ownerId === myUserId) return true;
+  const n = normName(me);
+  if (!n) return false;
+  return normName(g.owner).indexOf(n) >= 0 || normName(g.referrer).indexOf(n) >= 0;
+}
+
 function visible() {
   if (filter === "joined") return guests.filter(function (g) { return g.status === JOINED; });
   if (filter === "lost") return guests.filter(function (g) { return g.status === LOST; });
-  if (filter === "mine") {
-    return guests.filter(function (g) {
-      return (g.referrer && g.referrer.indexOf(me) >= 0) || (g.owner && g.owner.indexOf(me) >= 0);
-    });
-  }
+  if (filter === "mine") return guests.filter(isMine);
   return guests.filter(inGuestList);
 }
 
@@ -138,6 +149,7 @@ function cardHtml(g) {
         '<p class="meta">' +
           (g.updatedAt ? "最終更新 " + esc(fmtWhen(g.updatedAt)) + (g.updatedBy ? "（" + esc(g.updatedBy) + "）" : "") : "未更新") +
         "</p>" +
+        claimButton(g) +
         moveButtons(g) +
         '<div class="danger">' +
           '<button type="button" class="del-open" data-del-open>このゲストを削除する</button>' +
@@ -158,6 +170,18 @@ function fmtWhen(value) {
 }
 
 /** リストを移すボタン。いまどのリストに居るかで出し分ける */
+/** 担当の引き受け。氏名ではなくIDで結ぶので、あとで表記が変わっても外れない */
+function claimButton(g) {
+  const mine = g.ownerId && g.ownerId === myUserId;
+  return '<div class="claim">' +
+    (mine
+      ? '<button type="button" class="move back" data-claim="0">担当を外れる</button>' +
+        '<span class="claim-now">あなたが担当です</span>'
+      : '<button type="button" class="move back" data-claim="1">自分が担当する</button>' +
+        (g.owner ? '<span class="claim-now">いまの担当：' + esc(g.owner) + "</span>" : "")) +
+    "</div>";
+}
+
 function moveButtons(g) {
   if (g.status === JOINED || g.status === LOST) {
     return '<div class="moves"><button type="button" class="move back" data-move="">' +
@@ -200,6 +224,31 @@ el.list.addEventListener("click", async function (e) {
   if (pick) {
     card.querySelectorAll("[data-pick]").forEach(function (b) { b.classList.remove("is-on"); });
     pick.classList.add("is-on");
+    return;
+  }
+
+  // ---- 担当を引き受ける／外れる ----
+  const claim = e.target.closest("[data-claim]");
+  if (claim) {
+    const want = claim.dataset.claim === "1";
+    claim.disabled = true;
+    const label = claim.textContent;
+    claim.textContent = "処理中…";
+    try {
+      const r = await call({ action: "claim", id: id, claim: want });
+      if (!r.ok) throw new Error(r.error || "できませんでした");
+      const g = guests.find(function (x) { return x.id === id; });
+      g.ownerId = want ? myUserId : "";
+      g.owner = want ? me : "";
+      g.updatedBy = me;
+      g.updatedAt = "たった今";
+      render();
+      toast(want ? "担当になりました" : "担当を外れました");
+    } catch (err) {
+      claim.disabled = false;
+      claim.textContent = label;
+      toast(String(err.message || err));
+    }
     return;
   }
 
@@ -386,6 +435,7 @@ async function start() {
       return;
     }
     me = r.me || "";
+    if (r.myUserId) myUserId = r.myUserId;
     guests = r.guests || [];
     el.who.textContent = me ? me + " さん" : "";
     el.tabs.hidden = false;
