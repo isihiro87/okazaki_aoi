@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="岡崎市葵倫理法人会">
+  <defs>
+    <linearGradient id="dawn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#111c33"/>
+      <stop offset="60%" stop-color="#1b2a4a"/>
+      <stop offset="100%" stop-color="#d95f3c"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="url(#dawn)"/>
+  <circle cx="32" cy="47" r="11" fill="#f2a37e"/>
+  <rect x="6" y="47" width="52" height="11" fill="#d95f3c"/>
+  <text x="32" y="34" text-anchor="middle"
+        font-family="'Shippori Mincho B1','Yu Mincho','MS Mincho',serif"
+        font-size="30" font-weight="700" fill="#ffffff">葵</text>
+</svg>
