@@ -7,7 +7,8 @@
      https://liff.line.me/2010379578-AHTrNoVb/approve
    こうすると LIFF をもう1つ作らなくて済む。
 
-   ※ 承認できるのは役員以上。サーバー側（/api/members）で判定している。
+   ※ 承認できるのは三役だけ（原則 専任幹事）。サーバー側（/api/members）で判定している。
+   　 幹事でも承認できると、幹事が誰かを会長に昇格させられてしまうため。
    ============================================================ */
 const LIFF_ID = "2010379578-AHTrNoVb";
 const API_ENDPOINT = "https://ao-i.vercel.app/api/members";
@@ -135,7 +136,7 @@ async function start() {
     const r = await call({ action: "pending" });
     if (!r.ok) {
       el.msg.textContent = r.error === "unauthorized"
-        ? "この画面は役員のみが開けます。"
+        ? "この画面は三役のみが開けます。承認が必要な場合は専任幹事へご連絡ください。"
         : "読み込めませんでした。時間をおいてお試しください。";
       el.who.textContent = "";
       return;
