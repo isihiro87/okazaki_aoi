@@ -61,7 +61,7 @@ const SCHEDULE = [
     affiliation:"渋谷区倫理法人会 相談役",
     speaker:"沼田 真清", ruby:"ぬまた ますみ" },
   { date:"2026-10-08",
-    affiliation:"株式会社一心堂印房", speaker:"神道 裕", ruby:"じんどう ゆたか",
+    affiliation:"株式会社一心堂印房", speaker:"神道 裕", ruby:"じんどう ゆう",
     role:"岡崎市葵倫理法人会 副会長" },
   { date:"2026-10-15", closed:true,
     note:"三河地区交換講話のため、葵の会場はお休みです（専任幹事 石本大貴が豊川市倫理法人会で講話します）" },
