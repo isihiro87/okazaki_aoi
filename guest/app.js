@@ -4,9 +4,8 @@
    LINEのログインは求めません。まだ友だち追加もされていない方が、
    その場で書けることを優先しています。
 
-   合言葉は URL の ?k=… から受け取ります。
-   会場に貼るQRコードにこれを含めておくので、
-   お越しになった方は何も入力する必要がありません。
+   合言葉は求めません。会場でQRコードを読んだ方が、そのまま書けることを優先しています。
+   自動投稿だけは、画面に出ない「罠の欄」で弾いています。
    ============================================================ */
 const API_ENDPOINT = "https://ao-i.vercel.app/api/guest-form";
 
@@ -21,7 +20,6 @@ const TRIGGERS = [
 ];
 
 const $ = function (id) { return document.getElementById(id); };
-const key = new URLSearchParams(location.search).get("k") || "";
 
 function esc(s) {
   return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -37,12 +35,6 @@ $("triggers").innerHTML = TRIGGERS.map(function (t) {
   return '<label class="check"><input type="checkbox" value="' + esc(t) + '"><span>' + esc(t) + "</span></label>";
 }).join("");
 
-// 合言葉が無いときは入力させない（会場のQR以外から開かれた場合）
-if (!key) {
-  $("form").hidden = true;
-  $("locked").hidden = false;
-}
-
 $("form").addEventListener("submit", async function (e) {
   e.preventDefault();
   const name = $("name").value.trim();
@@ -52,7 +44,7 @@ $("form").addEventListener("submit", async function (e) {
   $("triggers").querySelectorAll("input:checked").forEach(function (c) { triggers.push(c.value); });
 
   const payload = {
-    key: key,
+    website: $("website").value, // 罠の欄。人は空のまま
     name: name,
     kana: $("kana").value.trim(),
     company: $("company").value.trim(),
@@ -75,9 +67,7 @@ $("form").addEventListener("submit", async function (e) {
       body: JSON.stringify(payload),
     });
     const r = await res.json();
-    if (!r.ok) throw new Error(r.error === "unauthorized"
-      ? "会場でお配りしているQRコードからお進みください。"
-      : (r.error || "送信できませんでした"));
+    if (!r.ok) throw new Error(r.error || "送信できませんでした");
     $("form").hidden = true;
     $("done").hidden = false;
     window.scrollTo(0, 0);

@@ -23,11 +23,9 @@
     </p>
   </header>
 
-  <p id="locked" class="locked" hidden>
-    このページは、会場でお配りしているQRコードからお進みください。
-  </p>
-
   <form id="form" class="form" novalidate>
+    <!-- 罠の欄。人には見えず、自動投稿だけが埋める -->
+    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
     <label class="field">
       <span class="label">お名前 <em>必須</em></span>
       <input type="text" id="name" required autocomplete="name" placeholder="例）岡崎 太郎">

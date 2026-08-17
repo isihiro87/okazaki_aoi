@@ -54,3 +54,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--ai);outline-offs
 .done-note{margin-top:22px!important;font-size:13px;line-height:1.9;color:var(--hai)}
 
 [hidden]{display:none!important}
+
+/* 罠の欄。人には見えない位置に置く（display:none だと埋めない機械がいる） */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
