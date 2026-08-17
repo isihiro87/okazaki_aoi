@@ -13,8 +13,8 @@ const API_ENDPOINT = "https://ao-i.vercel.app/api/members";   // ← aoi アプ�
 const OTHER = "その他";
 
 /* 委員会への配属がない役職。選んだら委員会の欄を出さない。
-   副専任幹事・事務長・副事務長は委員会に所属するので、ここには入れない。 */
-const NO_COMMITTEE_POSITIONS = ["会長", "副会長", "専任幹事"];
+   副会長・副専任幹事・事務長・副事務長は委員会に所属するので、ここには入れない。 */
+const NO_COMMITTEE_POSITIONS = ["会長", "専任幹事"];
 
 /* 倫理法人会での役職。「副顧問」という役は無いので入れない */
 const ROLES = [
