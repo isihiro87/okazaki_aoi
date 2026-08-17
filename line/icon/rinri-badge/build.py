@@ -16,7 +16,7 @@ from PIL import Image, ImageDraw
 
 CANVAS = 640
 SAFE = 0.85  # 紋章の最大半径 / 円の半径
-DEFAULT_SRC = 'docs/cropped-rinri-kanagawa_logo_800.png'
+DEFAULT_SRC = 'docs/18_画像素材/倫理研究所_社章.png'
 
 BACKGROUNDS = {
     '01_kinari': (0xFA, 0xF7, 0xF1),  # 生成り（サイト基調）
