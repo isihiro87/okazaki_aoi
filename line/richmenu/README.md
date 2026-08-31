@@ -48,3 +48,64 @@ curl -X POST https://api.line.me/v2/bot/user/all/richmenu/＜richMenuId＞ \
 
 - LINEでアカウントを開き、メニューの4ボタンがそれぞれ正しく開く／送信されることを確認。
 - 「お問い合わせ」送信時は、自動応答 or 1to1で受けられるよう Official Account Manager 側を設定（設計書 §3.1）。
+
+---
+
+## 役員用メニュー（役職に応じた出し分け・6マス）
+
+`richmenu-officer6.json` は**役職者だけ**に見せる6マスのメニューです。
+画像は `richmenu-image-officer6.jpg`（既定メニューと同じ和モダンのテイスト）。
+
+| | 左 | 中 | 右 |
+|---|---|---|---|
+| **上** | **組織図・名簿**（資料棚のLIFF） | **ゲスト進捗** | 会員登録 |
+| **下** | 講話スケジュール | 会場アクセス | お問い合わせ |
+
+既定メニュー（4マス）に、役員だけの2つ（組織図・名簿／ゲスト進捗）を足した形です。
+一般会員ができることは、役員も全部できます。
+
+### なぜ個別に紐づけるのか
+
+**LINE標準の絞り込み配信（オーディエンス）は使えません。** 対象人数の下限（50人程度）があり、
+葵の役員27名では下限割れします。ユーザー個別のリッチメニュー紐づけには下限がありません。
+
+### 画像を作り直すとき
+
+`画像生成プロンプト.md` と同じ要領で画像生成AIに作らせます。
+**4マス版のテンプレート `richmenu-image.svg` は下書きで、実物とは別物**なので参考にしないこと。
+本物のテイストは `richmenu-image.jpg` を見てください。
+
+できた画像は **2500×1686・1MB以下のJPEG**にします（生成直後のPNGは数MBあります）。
+
+### 手順
+
+```bash
+# 1. 役員用メニューを登録して ID を控える
+curl -X POST https://api.line.me/v2/bot/richmenu   -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN"   -H "Content-Type: application/json"   -d @richmenu-officer6.json
+#   → {"richMenuId":"richmenu-xxxxxxxx"}
+
+# 2. 画像を上げる
+curl -X POST https://api-data.line.me/v2/bot/richmenu/richmenu-xxxxxxxx/content   -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN"   -H "Content-Type: image/jpeg"   --data-binary @richmenu-image-officer6.jpg
+
+# 3. aoi の .env.local と Vercel の環境変数に控えた ID を入れる
+#    LINE_RICHMENU_OFFICER_ID=richmenu-xxxxxxxx
+
+# 4. 全員ぶんを貼り直す
+cd ../../../aoi
+npm run richmenu:sync                 # 誰がどちらになるかの確認
+npm run richmenu:sync -- --commit
+```
+
+> **既定メニューは「デフォルト」に設定したままにしてください。** 役員用は個別紐づけで上書きされます。
+> 役職から外れた方は紐づけが解かれ、自動で既定へ戻ります。
+> `LINE_RICHMENU_OFFICER_ID` が未設定のあいだは、出し分けそのものが動きません（全員が既定）。
+
+以後は**会員登録・承認のたびに自動で貼り替わります**。
+ずれたときは `npm run richmenu:sync -- --commit` で揃います。
+
+### 現在の登録（2026/8/31）
+
+| | ID |
+|---|---|
+| 既定（会員メニュー・4マス） | `richmenu-02481a26334f09572c0a10deb8a29b4a` |
+| 役員メニュー（6マス） | `richmenu-4da00dc3061724f8ea4f3e355f564150` |

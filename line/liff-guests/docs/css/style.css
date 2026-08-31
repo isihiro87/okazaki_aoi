@@ -1,0 +1,74 @@
+/* 役員の資料棚（LIFF）。LINE内で開くので、片手で読めることだけを狙う */
+:root{
+  --ink:#2f3a34;
+  --sub:#7d857f;
+  --line:#e2e7e3;
+  --bg:#f5f7f5;
+  --acc:#4a6b57;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  color:var(--ink);background:#fff;
+  font-size:15px;line-height:1.7;
+  padding-bottom:env(safe-area-inset-bottom);
+  -webkit-text-size-adjust:100%;
+  overflow-x:hidden;
+}
+
+.bar{
+  position:sticky;top:0;z-index:5;
+  display:flex;flex-direction:column;align-items:stretch;
+  padding:11px 0 0;background:#fff;border-bottom:1px solid var(--line);
+}
+.bar-main{padding:0 14px 9px}
+.bar h1{font-size:16px;font-weight:700;letter-spacing:.02em}
+.who{font-size:12px;color:var(--sub);margin-top:1px}
+
+main{padding:12px 14px 30px}
+
+/* 状態表示 */
+.state{text-align:center;padding:44px 18px;color:var(--sub)}
+.state .icon{font-size:34px;line-height:1;margin-bottom:12px}
+.state .lead{color:var(--ink);font-size:14.5px;text-align:left;max-width:30em;margin:0 auto}
+.state .sub{font-size:13px;margin-top:12px}
+.spinner{
+  width:26px;height:26px;margin:0 auto 12px;
+  border:3px solid var(--line);border-top-color:var(--acc);border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn{
+  font:inherit;font-size:14px;margin-top:16px;
+  background:var(--acc);color:#fff;border:0;border-radius:9px;
+  padding:10px 22px;cursor:pointer;
+}
+
+/* タブ（資料の切り替え） */
+.tabs{display:flex;gap:0;border-top:1px solid var(--line);overflow-x:auto;
+      -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:1 0 auto;min-width:40%;
+  font:inherit;font-size:14px;font-weight:700;
+  color:var(--sub);background:none;border:0;
+  border-bottom:3px solid transparent;
+  padding:11px 16px 9px;cursor:pointer;white-space:nowrap;
+}
+.tab[aria-selected="true"]{color:var(--acc);border-bottom-color:var(--acc)}
+
+
+/* 資料の中身 */
+.paper{
+  border:1px solid var(--line);border-radius:12px;
+  overflow:hidden;background:#fff;
+}
+.sheet{display:block;width:100%;border:0;min-height:60vh}
+.note{font-size:12px;color:var(--sub);margin-top:12px;line-height:1.75}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;word-break:break-all}
+
+.foot{
+  border-top:1px solid var(--line);
+  padding:12px 16px calc(16px + env(safe-area-inset-bottom));
+  font-size:12px;color:var(--sub);line-height:1.7;
+}
