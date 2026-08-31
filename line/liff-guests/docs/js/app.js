@@ -30,7 +30,6 @@ const el = {
   retryBtn: document.getElementById("retryBtn"),
   viewer: document.getElementById("viewer"),
   viewerBody: document.getElementById("viewerBody"),
-  pdfName: document.getElementById("pdfName"),
 };
 
 let idToken = null;
@@ -118,7 +117,6 @@ function render(doc) {
 
   el.viewerBody.innerHTML = "";
   el.viewerBody.appendChild(frame);
-  el.pdfName.textContent = doc.pdfName || "";
   show("viewer");
 }
 
