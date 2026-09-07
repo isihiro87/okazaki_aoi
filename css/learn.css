@@ -1,0 +1,196 @@
+/* ============================================================
+   学びのページ ― css/style.css に足す形で読み込みます
+   色や書体は style.css の :root をそのまま使います
+   ============================================================ */
+
+.lv-hero{
+  background:linear-gradient(160deg,var(--ai) 0%,var(--ai-deep) 100%);
+  color:var(--shiro);padding:calc(var(--header-h) + 48px) 0 52px;
+}
+.lv-hero h1{
+  font-family:var(--serif);font-weight:600;letter-spacing:.06em;line-height:1.5;
+  font-size:clamp(27px,4.4vw,40px);margin-bottom:14px;
+}
+.lv-hero p{max-width:42em;color:rgba(255,255,255,.88)}
+.lv-hero .eyebrow{color:var(--akebono-soft)}
+
+/* ---- 段階のタブ ---- */
+.lv-tabs{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  max-width:var(--maxw);margin:-30px auto 0;padding:0 24px;
+  position:relative;z-index:2;
+}
+.lv-tab{
+  background:var(--shiro);border:1px solid var(--keisen);border-radius:12px;
+  padding:16px 12px;cursor:pointer;text-align:center;font-family:var(--sans);
+  color:var(--sumi);box-shadow:var(--sh-1);transition:transform .15s,box-shadow .15s;
+  display:flex;flex-direction:column;gap:4px;line-height:1.5;
+}
+.lv-tab b{font-family:var(--serif);font-size:19px;letter-spacing:.08em}
+.lv-tab small{font-size:12px;color:var(--hai)}
+.lv-tab:hover{transform:translateY(-2px);box-shadow:var(--sh-2)}
+.lv-tab.is-on{
+  background:var(--ai);color:var(--shiro);border-color:var(--ai);box-shadow:var(--sh-2);
+}
+.lv-tab.is-on small{color:var(--akebono-soft)}
+/* 準備中の段階。押せないことが見て分かるようにする */
+.lv-tab.is-soon{
+  background:var(--kinari-2);color:var(--hai);border-style:dashed;
+  box-shadow:none;cursor:default;
+}
+.lv-tab.is-soon:hover{transform:none;box-shadow:none}
+.lv-tab.is-soon b{color:var(--hai)}
+.lv-tab.is-soon i{
+  font-style:normal;font-family:var(--sans);font-size:11px;letter-spacing:.1em;
+  color:var(--hai);border:1px solid var(--keisen);border-radius:99px;
+  padding:1px 9px;margin-left:9px;vertical-align:2px;background:var(--shiro);
+}
+@media(max-width:560px){
+  .lv-tabs{grid-template-columns:1fr;gap:8px;margin-top:-24px}
+  .lv-tab{flex-direction:row;align-items:baseline;justify-content:flex-start;
+    gap:10px;text-align:left;padding:13px 16px}
+  .lv-tab b{font-size:17px}
+}
+
+/* ---- 段階の説明・進み具合・続きから ---- */
+.lv-page{padding:56px 0 86px}
+@media(max-width:680px){.lv-page{padding:40px 0 60px}}
+.lv-intro{max-width:640px;margin:0 auto 38px;text-align:center}
+.lv-guide{
+  font-family:var(--serif);font-size:clamp(19px,2.6vw,24px);
+  letter-spacing:.05em;margin-bottom:8px;
+}
+.lv-desc{color:var(--hai);font-size:15px}
+.lv-prog{display:flex;align-items:center;gap:12px;max-width:320px;margin:22px auto 0}
+.lv-prog-track{flex:1;height:7px;border-radius:99px;background:var(--kinari-2);overflow:hidden}
+.lv-prog-fill{
+  height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--akebono),var(--akebono-lt));
+  transition:width .3s ease;
+}
+.lv-prog-txt{font-size:13px;color:var(--hai);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+.lv-resume{
+  margin-top:20px;border:0;cursor:pointer;font-family:var(--sans);
+  background:var(--ai);color:var(--shiro);border-radius:99px;
+  padding:13px 30px;font-size:15px;font-weight:700;letter-spacing:.03em;
+  display:inline-flex;flex-direction:column;align-items:center;gap:2px;
+  box-shadow:var(--sh-1);transition:transform .15s,box-shadow .15s;
+}
+.lv-resume small{font-weight:400;font-size:12.5px;color:rgba(255,255,255,.82);letter-spacing:.02em}
+.lv-resume:hover{transform:translateY(-2px);box-shadow:var(--sh-2)}
+.lv-done{margin-top:18px;font-size:14px;color:var(--akebono);font-weight:700}
+
+/* ---- カード ---- */
+.lv-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(268px,1fr))}
+.lv-card{
+  background:var(--shiro);border:1px solid var(--keisen);border-radius:14px;
+  box-shadow:var(--sh-1);overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:box-shadow .15s,border-color .15s,transform .15s;
+}
+.lv-card:not(.is-soon):hover{box-shadow:var(--sh-2);transform:translateY(-2px)}
+.lv-card.is-soon{background:var(--kinari-2);box-shadow:none}
+.lv-card.is-watched{border-color:var(--akebono-soft)}
+
+/* サムネイル（動画の1コマ。縦型なので中央だけ見せる） */
+.lv-thumb{
+  position:relative;aspect-ratio:16/10;background:var(--ai);overflow:hidden;
+  display:block;cursor:pointer;
+}
+.lv-thumb img{width:100%;height:100%;object-fit:cover;object-position:center 46%}
+.lv-thumb.no-img{
+  background:var(--kinari-2);
+  background-image:repeating-linear-gradient(45deg,rgba(27,42,74,.045) 0 10px,transparent 10px 20px);
+  cursor:default;
+}
+.lv-thumb-no{
+  position:absolute;top:10px;left:12px;font-family:var(--serif);font-size:14px;
+  letter-spacing:.08em;color:var(--shiro);text-shadow:0 1px 4px rgba(0,0,0,.45);
+}
+.lv-thumb.no-img .lv-thumb-no{color:var(--ai-soft);text-shadow:none}
+.lv-thumb-play{
+  position:absolute;left:10px;bottom:10px;width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.94);color:var(--ai);font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);transition:transform .15s;padding-left:2px;
+}
+.lv-card:hover .lv-thumb-play{transform:scale(1.12)}
+.lv-thumb::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:opacity .15s;
+  background:rgba(17,28,51,.18);
+}
+.lv-card:not(.is-soon):hover .lv-thumb::before{opacity:1}
+.lv-thumb-min{
+  position:absolute;right:10px;bottom:10px;font-size:11.5px;color:var(--shiro);
+  background:rgba(17,28,51,.72);border-radius:4px;padding:2px 8px;letter-spacing:.04em;
+}
+.lv-card.is-watched .lv-thumb::after{
+  content:"見た";position:absolute;top:10px;right:10px;
+  font-size:11px;letter-spacing:.08em;color:var(--shiro);
+  background:var(--akebono);border-radius:99px;padding:2px 10px;
+}
+
+.lv-body{padding:17px 20px 4px;flex:1;display:flex;flex-direction:column;gap:8px}
+.lv-card h3{
+  font-family:var(--serif);font-size:18px;font-weight:600;
+  letter-spacing:.03em;line-height:1.55;
+}
+.lv-gist{font-size:14px;color:var(--sumi);line-height:1.8}
+.lv-note{font-size:12.5px;color:var(--hai);line-height:1.75}
+
+.lv-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 20px 16px;margin-top:auto;
+}
+.lv-badge{
+  font-size:11.5px;letter-spacing:.08em;color:var(--hai);
+  border:1px solid var(--keisen);border-radius:99px;padding:3px 12px;background:var(--shiro);
+}
+.lv-badge-mem{color:var(--akebono);border-color:var(--akebono-soft);background:#fff4ef}
+.lv-play{
+  border:1px solid var(--ai);background:var(--shiro);color:var(--ai);
+  border-radius:99px;padding:8px 22px;font-size:14px;font-weight:700;
+  font-family:var(--sans);cursor:pointer;transition:background .15s,color .15s;
+}
+.lv-play:hover{background:var(--ai);color:var(--shiro)}
+.lv-check{
+  display:flex;align-items:center;gap:7px;font-size:13px;color:var(--hai);cursor:pointer;
+}
+.lv-check input{width:17px;height:17px;accent-color:var(--akebono);cursor:pointer}
+.lv-card.is-watched .lv-check{color:var(--akebono)}
+
+/* ---- 再生窓（縦型の動画をカードの中で開くと一覧が崩れるため、別窓にする） ---- */
+body.lv-locked{overflow:hidden}
+.lv-modal{
+  position:fixed;inset:0;z-index:100;background:rgba(17,28,51,.82);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.lv-modal[hidden]{display:none}
+.lv-modal-in{width:min(420px,100%);display:flex;flex-direction:column;gap:10px}
+.lv-modal-bar{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.lv-modal-title{
+  font-family:var(--serif);font-size:16px;font-weight:600;color:var(--shiro);
+  letter-spacing:.04em;line-height:1.5;
+}
+.lv-modal-close{
+  flex:none;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.35);
+  background:transparent;color:var(--shiro);font-size:22px;line-height:1;cursor:pointer;
+  transition:background .15s;
+}
+.lv-modal-close:hover{background:rgba(255,255,255,.16)}
+.lv-modal-video{
+  position:relative;width:100%;aspect-ratio:9/16;max-height:78vh;margin:0 auto;
+  background:#000;border-radius:12px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.45);
+}
+.lv-modal-video video,.lv-modal-video iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;
+}
+@media(max-height:760px){.lv-modal-in{width:min(340px,100%)}}
+
+/* ---- 下の注記 ---- */
+.lv-foot-note{
+  max-width:640px;margin:48px auto 0;padding:22px 24px;
+  background:var(--kinari-2);border-radius:12px;font-size:14px;color:var(--hai);
+}
+.lv-foot-note b{color:var(--sumi)}

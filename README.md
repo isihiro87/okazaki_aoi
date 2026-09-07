@@ -10,7 +10,9 @@
 | パス | 内容 |
 |---|---|
 | `index.html` / `css/` / `js/` | 公開サイト本体 |
-| `js/data.js` | **広報委員が編集する唯一のファイル** |
+| `js/data.js` | **講話スケジュールなど、広報委員が編集するファイル** |
+| `learn.html` / `css/learn.css` / `js/learn.js` | **学びのページ**（会員向けの動画一覧。基本／慣れたら／詳しくの3段階） |
+| `js/learn-data.js` | **学びのページで広報委員が編集する唯一のファイル**（YouTubeのIDを入れる） |
 | `img/` `ogp.jpg` `favicon.svg` `apple-touch-icon.png` | 画像・アイコン |
 | `robots.txt` `sitemap.xml` | 検索エンジン向け |
 | `line/` | 公式LINE実装（あいさつ文・登録フォームLIFF・GAS保存先・リッチメニュー） |
@@ -43,6 +45,32 @@ const SCHEDULE = [
 | `EVENTS` | 倫理経営講演会・経営者の集いなど、**会員以外も参加できる行事** |
 | `REPORTS` | 活動報告カード。`image:"img/xxx.jpg"` で写真も出せます |
 | `CHAIRMAN_MESSAGE` | 会長メッセージ。`text` に文章を入れると差し替わります |
+
+## 学びのページの更新（動画ができたとき）
+
+**`js/learn-data.js` だけを編集します。**
+
+1. 動画を **YouTube の「限定公開」**にアップロードする（検索には出ません）
+2. URL の `v=` のうしろ11文字が動画IDです
+   （`https://www.youtube.com/watch?v=AbCdEfGh123` → `AbCdEfGh123`）
+3. `learn-data.js` の該当する行の `youtube:""` に貼りつける
+
+```js
+{ level:"basic", id:"BASIC-01", title:"「あやしい」と思って大丈夫",
+  gist:"宗教でも政治でもない。変えるのは、まず自分から。", min:1, youtube:"AbCdEfGh123" },
+```
+
+| 決まりごと | |
+|---|---|
+| `youtube` が空 `""` | そのカードは**「準備中」**と表示されます。消さなくて構いません |
+| `members:true` | **会員限定**の印が付き、動画は埋め込まれません（公式LINEへの案内だけ出ます） |
+| `level` | `"basic"`（基本）／`"next"`（慣れたら）／`"deep"`（詳しく） |
+| 「見た」の印 | **見た人のブラウザにだけ**残ります。会には送られません |
+
+⚠ **`learn.html` は `noindex`** です（検索に出ません）。会員向けのページなので、
+公式LINEやQRから直接開いてもらう想定です。
+
+動画の台本と作り方は `orientation-movie/`（`README.md` と `plans/学習ページ構想.md`）にあります。
 
 ## 公式LINE
 
