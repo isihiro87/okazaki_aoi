@@ -155,6 +155,9 @@
     if (on) {
       thumb.appendChild(el("span", "lv-thumb-play", "▶"));
       thumb.appendChild(el("span", "lv-thumb-min", "約" + v.min + "分"));
+    } else {
+      // 絵の中にも「準備中」を出す。下の帯だけだと気づかれない
+      thumb.appendChild(el("span", "lv-thumb-soon", "準備中"));
     }
     art.appendChild(thumb);
 

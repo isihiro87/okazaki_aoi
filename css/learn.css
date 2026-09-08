@@ -121,6 +121,12 @@
   background:rgba(17,28,51,.18);
 }
 .lv-card:not(.is-soon):hover .lv-thumb::before{opacity:1}
+.lv-thumb-soon{
+  position:absolute;inset:0;margin:auto;width:max-content;height:max-content;
+  font-family:var(--serif);font-size:19px;letter-spacing:.22em;color:var(--ai-soft);
+  border:1px solid var(--ai-soft);border-radius:99px;padding:7px 22px;
+  background:var(--shiro);
+}
 .lv-thumb-min{
   position:absolute;right:10px;bottom:10px;font-size:11.5px;color:var(--shiro);
   background:rgba(17,28,51,.72);border-radius:4px;padding:2px 8px;letter-spacing:.04em;

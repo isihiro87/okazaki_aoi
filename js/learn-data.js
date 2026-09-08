@@ -87,11 +87,10 @@ const LEARN = [
     file:"video/BASIC-07.mp4" },
   { level:"basic", id:"BASIC-08", title:"公式アプリの使い方",
     gist:"会員証がスマホに。受付はコードを見せるだけ。", min:1, youtube:"",
-    note:"実際のアプリ画面を撮ってから作ります。もう少しお待ちください。" },
-  /* ⚠ BASIC-09 は会員限定。mp4 をこのサイトに置かないこと（URLを直接開けてしまうため）。
-     公式LINEで配信し、ここは案内だけにする。 */
+    note:"実際のアプリ画面を撮ってから作ります。しばらくお待ちください。" },
   { level:"basic", id:"BASIC-09", title:"ここだけのルール",
-    gist:"講話で聞いた話を、外に出さない。", min:1, youtube:"", members:true },
+    gist:"講話で聞いた話を、外に出さない。", min:1,
+    file:"video/BASIC-09.mp4" },
   { level:"basic", id:"BASIC-10", title:"困ったときは誰に聞く",
     gist:"会費は事務長、お役はMS委員会、行事は専任幹事へ。", min:1,
     file:"video/BASIC-10.mp4" },
