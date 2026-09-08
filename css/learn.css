@@ -52,7 +52,7 @@
   .lv-tab b{font-size:17px}
 }
 
-/* ---- 段階の説明・進み具合・続きから ---- */
+/* ---- 段階の説明と進み具合 ---- */
 .lv-page{padding:56px 0 86px}
 @media(max-width:680px){.lv-page{padding:40px 0 60px}}
 .lv-intro{max-width:640px;margin:0 auto 38px;text-align:center}
@@ -69,17 +69,6 @@
   transition:width .3s ease;
 }
 .lv-prog-txt{font-size:13px;color:var(--hai);white-space:nowrap;font-variant-numeric:tabular-nums}
-
-.lv-resume{
-  margin-top:20px;border:0;cursor:pointer;font-family:var(--sans);
-  background:var(--ai);color:var(--shiro);border-radius:99px;
-  padding:13px 30px;font-size:15px;font-weight:700;letter-spacing:.03em;
-  display:inline-flex;flex-direction:column;align-items:center;gap:2px;
-  box-shadow:var(--sh-1);transition:transform .15s,box-shadow .15s;
-}
-.lv-resume small{font-weight:400;font-size:12.5px;color:rgba(255,255,255,.82);letter-spacing:.02em}
-.lv-resume:hover{transform:translateY(-2px);box-shadow:var(--sh-2)}
-.lv-done{margin-top:18px;font-size:14px;color:var(--akebono);font-weight:700}
 
 /* ---- カード ---- */
 .lv-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(268px,1fr))}

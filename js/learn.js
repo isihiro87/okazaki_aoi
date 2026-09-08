@@ -94,7 +94,6 @@
         if (card) { card.classList.add("is-watched"); }
         syncChecks();
         paintProgress();
-        paintResume();
       });
     }
     // ⚠ YouTube に切り替えたときは、埋め込みの再生位置がこちらから取れない。
@@ -201,7 +200,6 @@
         mark(v.id, input.checked);
         art.classList.toggle("is-watched", input.checked);
         paintProgress();
-        paintResume();
       });
       chk.appendChild(input);
       chk.appendChild(el("span", null, "見た"));
@@ -245,31 +243,6 @@
         (list.length ? Math.round(done / list.length * 100) : 0) + "%";
       bar.querySelector(".lv-prog-txt").textContent =
         done + " / " + list.length + " 本";
-    });
-  }
-
-  function paintResume() {
-    LEVELS.forEach(function (lv) {
-      if (lv.ready === false) { return; }
-      var host = document.querySelector('[data-resume="' + lv.key + '"]');
-      if (!host) { return; }
-      var list = listOf(lv.key);
-      var next = null;
-      for (var i = 0; i < list.length; i++) {
-        if (!isWatched(list[i].id)) { next = list[i]; break; }
-      }
-      host.innerHTML = "";
-      if (!next) {
-        if (list.length) { host.appendChild(el("p", "lv-done", "この段階は、ぜんぶ見終わりました。")); }
-        return;
-      }
-      var b = el("button", "lv-resume");
-      b.type = "button";
-      b.innerHTML = "▶ 続きから見る<small>" + next.title + "</small>";
-      b.addEventListener("click", function () {
-        openModal(next, document.getElementById("v-" + next.id));
-      });
-      host.appendChild(b);
     });
   }
 
@@ -334,9 +307,6 @@
       prog.appendChild(el("span", "lv-prog-txt", ""));
       intro.appendChild(prog);
 
-      var resume = el("div", "lv-resume-host");
-      resume.dataset.resume = lv.key;
-      intro.appendChild(resume);
       panel.appendChild(intro);
 
       var grid = el("div", "lv-grid");
@@ -354,7 +324,6 @@
     if (!ready(start)) { start = "basic"; }
     show(start);
     paintProgress();
-    paintResume();
 
     var y = document.getElementById("v-year");
     if (y) { y.textContent = new Date().getFullYear(); }
