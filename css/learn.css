@@ -5,7 +5,8 @@
 
 .lv-hero{
   background:linear-gradient(160deg,var(--ai) 0%,var(--ai-deep) 100%);
-  color:var(--shiro);padding:calc(var(--header-h) + 48px) 0 52px;
+  color:var(--shiro);padding:calc(var(--header-h) + 52px) 0 56px;
+  border-bottom:3px solid var(--akebono);
 }
 .lv-hero h1{
   font-family:var(--serif);font-weight:600;letter-spacing:.06em;line-height:1.5;
@@ -14,46 +15,9 @@
 .lv-hero p{max-width:42em;color:rgba(255,255,255,.88)}
 .lv-hero .eyebrow{color:var(--akebono-soft)}
 
-/* ---- 段階のタブ ---- */
-.lv-tabs{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
-  max-width:var(--maxw);margin:-30px auto 0;padding:0 24px;
-  position:relative;z-index:2;
-}
-.lv-tab{
-  background:var(--shiro);border:1px solid var(--keisen);border-radius:12px;
-  padding:16px 12px;cursor:pointer;text-align:center;font-family:var(--sans);
-  color:var(--sumi);box-shadow:var(--sh-1);transition:transform .15s,box-shadow .15s;
-  display:flex;flex-direction:column;gap:4px;line-height:1.5;
-}
-.lv-tab b{font-family:var(--serif);font-size:19px;letter-spacing:.08em}
-.lv-tab small{font-size:12px;color:var(--hai)}
-.lv-tab:hover{transform:translateY(-2px);box-shadow:var(--sh-2)}
-.lv-tab.is-on{
-  background:var(--ai);color:var(--shiro);border-color:var(--ai);box-shadow:var(--sh-2);
-}
-.lv-tab.is-on small{color:var(--akebono-soft)}
-/* 準備中の段階。押せないことが見て分かるようにする */
-.lv-tab.is-soon{
-  background:var(--kinari-2);color:var(--hai);border-style:dashed;
-  box-shadow:none;cursor:default;
-}
-.lv-tab.is-soon:hover{transform:none;box-shadow:none}
-.lv-tab.is-soon b{color:var(--hai)}
-.lv-tab.is-soon i{
-  font-style:normal;font-family:var(--sans);font-size:11px;letter-spacing:.1em;
-  color:var(--hai);border:1px solid var(--keisen);border-radius:99px;
-  padding:1px 9px;margin-left:9px;vertical-align:2px;background:var(--shiro);
-}
-@media(max-width:560px){
-  .lv-tabs{grid-template-columns:1fr;gap:8px;margin-top:-24px}
-  .lv-tab{flex-direction:row;align-items:baseline;justify-content:flex-start;
-    gap:10px;text-align:left;padding:13px 16px}
-  .lv-tab b{font-size:17px}
-}
+/* ---- 段階の見出しと進み具合 ---- */
+.lv-page{padding:48px 0 86px}
 
-/* ---- 段階の説明と進み具合 ---- */
-.lv-page{padding:56px 0 86px}
 @media(max-width:680px){.lv-page{padding:40px 0 60px}}
 .lv-intro{max-width:640px;margin:0 auto 38px;text-align:center}
 .lv-guide{
@@ -189,3 +153,51 @@ body.lv-locked{overflow:hidden}
   background:var(--kinari-2);border-radius:12px;font-size:14px;color:var(--hai);
 }
 .lv-foot-note b{color:var(--sumi)}
+
+
+/* ============================================================
+   段階のタブ（2026/9/8 作り直し）
+   ------------------------------------------------------------
+   前は濃紺の帯にまたがっていて、選ばれている濃紺のタブが背景に
+   沈んでいた。いまは**生成りの本文側**に置き、白い受け皿の中で
+   選ばれているものだけを濃紺で塗る。地・受け皿・選択が
+   生成り → 白 → 濃紺 と、はっきり3段階になる。
+   ============================================================ */
+.lv-tabs{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+  background:var(--shiro);border:1px solid var(--keisen);border-radius:14px;
+  padding:6px;margin:0 auto 44px;max-width:760px;box-shadow:var(--sh-1);
+}
+.lv-tab{
+  border:0;background:transparent;border-radius:10px;cursor:pointer;
+  font-family:var(--sans);color:var(--sumi);padding:14px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.5;
+  transition:background .15s,color .15s;
+}
+.lv-tab-name{
+  font-family:var(--serif);font-size:18px;letter-spacing:.1em;
+  display:inline-flex;align-items:baseline;gap:8px;
+}
+.lv-tab-num,.lv-tab-soon{
+  font-style:normal;font-family:var(--sans);font-size:11px;letter-spacing:.06em;
+  border-radius:99px;padding:2px 8px;
+}
+.lv-tab-num{background:var(--kinari-2);color:var(--hai)}
+.lv-tab-soon{background:transparent;border:1px solid var(--keisen);color:var(--hai)}
+.lv-tab-sub{font-size:12px;color:var(--hai)}
+
+.lv-tab:not(.is-soon):hover{background:var(--kinari-2)}
+.lv-tab.is-on{background:var(--ai);color:var(--shiro)}
+.lv-tab.is-on .lv-tab-sub{color:var(--akebono-soft)}
+.lv-tab.is-on .lv-tab-num{background:rgba(255,255,255,.16);color:var(--shiro)}
+
+.lv-tab.is-soon{cursor:default;color:var(--hai)}
+.lv-tab.is-soon .lv-tab-name{color:var(--hai)}
+.lv-tab.is-soon:hover{background:transparent}
+
+@media(max-width:560px){
+  .lv-tabs{grid-template-columns:1fr;gap:4px;border-radius:12px;margin-bottom:34px}
+  .lv-tab{flex-direction:row;justify-content:space-between;text-align:left;padding:12px 14px}
+  .lv-tab-name{font-size:16px}
+  .lv-tab-sub{font-size:11.5px;text-align:right}
+}

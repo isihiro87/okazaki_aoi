@@ -249,9 +249,16 @@
   /* ============================================================
      段階の切り替え
      ============================================================ */
+  function ready(key) {
+    for (var i = 0; i < LEVELS.length; i++) {
+      if (LEVELS[i].key === key) { return LEVELS[i].ready !== false; }
+    }
+    return false;
+  }
+
   function show(key) {
     if (!ready(key)) { key = "basic"; }
-    document.querySelectorAll(".lv-panel").forEach(function (p) {
+    document.querySelectorAll(".lv-stage").forEach(function (p) {
       p.hidden = (p.dataset.level !== key);
     });
     document.querySelectorAll(".lv-tab").forEach(function (t) {
@@ -265,6 +272,8 @@
 
   /* ============================================================
      組み立て
+     タブは**生成りの本文側**に置く。濃紺の帯にまたがると、
+     選ばれている濃紺のタブが背景に沈んで見えなくなるため（2026/9/8）。
      ============================================================ */
   function build() {
     var tabs = document.getElementById("lv-tabs");
@@ -274,12 +283,22 @@
 
     LEVELS.forEach(function (lv) {
       var open = lv.ready !== false;
+      var count = LEARN.filter(function (v) {
+        return v.level === lv.key && playable(v);
+      }).length;
+
       var t = el("button", "lv-tab" + (open ? "" : " is-soon"));
       t.type = "button";
       t.dataset.level = lv.key;
       t.setAttribute("role", "tab");
-      t.innerHTML = "<b>" + lv.name + (open ? "" : "<i>準備中</i>") +
-        "</b><small>" + lv.tagline + "</small>";
+      var head = el("span", "lv-tab-name", lv.name);
+      if (open) {
+        head.appendChild(el("i", "lv-tab-num", String(count) + "本"));
+      } else {
+        head.appendChild(el("i", "lv-tab-soon", "準備中"));
+      }
+      t.appendChild(head);
+      t.appendChild(el("span", "lv-tab-sub", lv.tagline));
       if (open) {
         t.addEventListener("click", function () { show(lv.key); });
       } else {
@@ -291,7 +310,7 @@
 
       if (!open) { return; }
 
-      var panel = el("section", "lv-panel");
+      var panel = el("section", "lv-stage");
       panel.dataset.level = lv.key;
       panel.hidden = true;
 
@@ -306,7 +325,6 @@
       prog.appendChild(track);
       prog.appendChild(el("span", "lv-prog-txt", ""));
       intro.appendChild(prog);
-
       panel.appendChild(intro);
 
       var grid = el("div", "lv-grid");
