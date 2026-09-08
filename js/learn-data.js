@@ -61,9 +61,6 @@ const LEVELS = [
 const LEARN = [
 
   /* ---- 基本 ---- */
-  { level:"basic", id:"ORI-01", title:"倫理法人会 ７つのきほん",
-    gist:"この先の目次になる1本。まずはここから。", min:2,
-    file:"video/ORI-01.mp4" },
   { level:"basic", id:"BASIC-01", title:"「あやしい」と思って大丈夫",
     gist:"倫理は宗教や政治ではない。変えるのは、まず自分から。", min:1,
     file:"video/BASIC-01.mp4" },
