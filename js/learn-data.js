@@ -94,7 +94,8 @@ const LEARN = [
 
   /* ---- 慣れたら ---- */
   { level:"next", id:"NEXT-01", title:"6つの委員会は、何をするところか",
-    gist:"MS・朝礼・研修・広報・女性・活性化。自分の委員会が何をする場所か。", min:1, youtube:"" },
+    gist:"MS・朝礼・研修・広報・女性・活性化。自分の委員会が何をする場所か。", min:1,
+    file:"video/NEXT-01.mp4" },
   { level:"next", id:"ORI-12", title:"ゲストを連れて行きたい",
     gist:"初回は無料。案内役がつきます。ノルマではありません。", min:1, youtube:"" },
   { level:"next", id:"ORI-13", title:"5:30の活力朝礼ってなに？",
@@ -114,7 +115,8 @@ const LEARN = [
 
   /* ---- 詳しく ---- */
   { level:"deep", id:"DEEP-01", title:"役職の名前と、その中身",
-    gist:"会長・専任幹事・幹事・運営委員。偉い人の順番ではなく、役割の名前です。", min:2, youtube:"" },
+    gist:"会長・専任幹事・幹事・運営委員。偉い人の順番ではなく、役割の名前です。", min:2,
+    file:"video/DEEP-01.mp4" },
   { level:"deep", id:"ORI-15", title:"何のための会なのか",
     gist:"自己革新 → 会社と家庭 → 地域社会。順番が大事。", min:3, youtube:"" },
   { level:"deep", id:"ORI-16", title:"「純粋倫理」って言われても",
