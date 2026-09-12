@@ -76,6 +76,18 @@
         <input type="text" placeholder="例）副幹事長">
       </div>
 
+      <!-- 県・地区の役職（任意）。葵での役職とは別に持つ -->
+      <div class="field" id="prefBlock">
+        <span class="label">愛知県・三河地区の役職 <em class="opt">任意</em></span>
+        <select id="prefOrg"></select>
+        <div class="field other" id="prefPosWrap" hidden>
+          <span class="label">役職名（ご入力ください）</span>
+          <input type="text" id="prefPosition" list="prefPositionList" placeholder="例）研修副委員長">
+          <datalist id="prefPositionList"></datalist>
+        </div>
+        <p class="hint">県や地区で役職をお持ちの方はご入力ください。お持ちでなければ「なし」のままで構いません。</p>
+      </div>
+
       <div class="field" id="committeeBlock">
         <span class="label">所属委員会 <em class="opt">任意</em></span>
         <div id="committeeList"></div>

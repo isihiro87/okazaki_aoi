@@ -62,6 +62,7 @@ function render() {
       KIND_LABELS[p.kind] || p.kind,
       p.company,
       p.position,
+      p.prefPosition,
       (p.committees || []).join("／"),
       p.kaiName,
     ].filter(Boolean).join("　/　");

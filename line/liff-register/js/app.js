@@ -33,6 +33,19 @@ const COMMITTEES = [
 
 const VISIT_COUNTS = ["初めて", "2回目", "3回目", "4回目以上"];
 
+/* 県・地区の役職。葵での役職とは別に持つ（例: 葵では会員、県ではMS委員長）。
+   「愛知県倫理法人会 研修副委員長」の形で1つの文字列にして送る。 */
+const PREF_NONE = "なし";
+const PREF_ORGS = [PREF_NONE, "愛知県倫理法人会", "三河地区", OTHER];
+const PREF_POSITIONS = [
+  "会長", "副会長", "幹事長", "副幹事長", "専任幹事", "事務長",
+  "地区長", "副地区長",
+  "MS委員長", "MS副委員長", "研修委員長", "研修副委員長",
+  "朝礼委員長", "朝礼副委員長", "広報委員長", "広報副委員長",
+  "普及拡大委員長", "普及拡大副委員長", "女性委員長", "女性副委員長",
+  "青年委員長", "青年副委員長", "委員",
+];
+
 const TRIGGERS = [
   "会員に誘われて",
   "知人・友人の紹介",
@@ -75,6 +88,8 @@ const el = {
   secAoi: $("secAoi"), secGuest: $("secGuest"), secOther: $("secOther"),
   role: $("role"), roleOther: $("roleOther"),
   committeeBlock: $("committeeBlock"), execNote: $("execNote"),
+  prefOrg: $("prefOrg"), prefPosWrap: $("prefPosWrap"), prefPosition: $("prefPosition"),
+  prefPositionList: $("prefPositionList"),
   committeeList: $("committeeList"), addCommittee: $("addCommittee"),
   visitCount: $("visitCount"), triggerList: $("triggerList"), triggerOther: $("triggerOther"),
   kaiFilter: $("kaiFilter"), kaiName: $("kaiName"), kaiAichi: $("kaiAichi"),
@@ -101,6 +116,28 @@ function fillSelect(select, items, placeholder) {
 
 fillSelect(el.role, ROLES, "選択してください");
 fillSelect(el.visitCount, VISIT_COUNTS, "選択してください");
+fillSelect(el.prefOrg, PREF_ORGS);
+el.prefPositionList.innerHTML = PREF_POSITIONS.map(function (v) {
+  return '<option value="' + esc(v) + '">';
+}).join("");
+
+function syncPrefVisibility() {
+  const has = el.prefOrg.value && el.prefOrg.value !== PREF_NONE;
+  el.prefPosWrap.hidden = !has;
+  el.prefPosition.placeholder = el.prefOrg.value === OTHER
+    ? "例）○○県倫理法人会 △△委員長"
+    : "例）研修副委員長";
+}
+el.prefOrg.addEventListener("change", syncPrefVisibility);
+
+/** 県・地区の役職を「組織 役職名」の1本の文字列にする。なしなら空 */
+function prefPositionFromForm() {
+  const org = el.prefOrg.value;
+  const pos = el.prefPosition.value.trim();
+  if (!org || org === PREF_NONE) return "";
+  if (org === OTHER) return pos;
+  return pos ? org + " " + pos : "";
+}
 
 el.triggerList.innerHTML = TRIGGERS.map(function (t) {
   return '<label class="check"><input type="checkbox" name="trigger" value="' + esc(t) + '"><span>' +
@@ -248,6 +285,7 @@ function buildPayload() {
       ? el.roleOther.querySelector("input").value.trim()
       : el.role.value;
     payload.committees = committeesFromForm();
+    payload.prefPosition = prefPositionFromForm();
   }
 
   if (kind === "guest") {
@@ -278,6 +316,9 @@ function buildPayload() {
 function validate(payload) {
   if (!payload.name) return "お名前をご入力ください。";
   if (kind === "aoi" && !payload.position) return "役職をお選びください。";
+  if (kind === "aoi" && el.prefOrg.value !== PREF_NONE && !payload.prefPosition) {
+    return "県・地区の役職名をご入力ください。お持ちでなければ「なし」をお選びください。";
+  }
   if (kind === "guest" && !payload.visitCount) return "何回目かをお選びください。";
   if (kind === "other_kai" && !payload.kaiName) return "所属の単会をお選びください。";
   return null;
@@ -326,6 +367,7 @@ function showAlready(data, approved) {
   if (data.company) rows.push(["会社・事業", data.company]);
   if (data.position) rows.push(["役職", data.position]);
   if (data.committees && data.committees.length) rows.push(["委員会", data.committees.join("／")]);
+  if (data.prefPosition) rows.push(["県・地区の役職", data.prefPosition]);
   if (data.kaiName) rows.push(["所属単会", data.kaiName]);
 
   el.alreadyBody.innerHTML = rows.map(function (r) {
@@ -351,6 +393,22 @@ el.editBtn.addEventListener("click", function () {
       el.roleOther.querySelector("input").value = d.position;
     }
     syncCommitteeVisibility();
+
+    // 県・地区の役職: 「愛知県倫理法人会 研修副委員長」を組織と役職名に戻す
+    const pref = String(d.prefPosition || "");
+    const org = PREF_ORGS.slice(1, -1).find(function (o) { return pref.indexOf(o + " ") === 0; });
+    if (!pref) {
+      el.prefOrg.value = PREF_NONE;
+      el.prefPosition.value = "";
+    } else if (org) {
+      el.prefOrg.value = org;
+      el.prefPosition.value = pref.slice(org.length + 1);
+    } else {
+      el.prefOrg.value = OTHER;
+      el.prefPosition.value = pref;
+    }
+    syncPrefVisibility();
+
     el.committeeList.innerHTML = "";
     (d.committees && d.committees.length ? d.committees : [""]).forEach(function (c) {
       const m = String(c).match(/^(.*?)（(.*)）$/);
